@@ -56,6 +56,7 @@ define [
 	###
 	GameObject::updateLifes = (lifes) ->
 		@lifes += lifes
+		@lifes = 0 if @lifes <= 0
 
 	###
 	decrease health of the object if shield is not active
@@ -75,7 +76,6 @@ define [
 			
 		if @lifes is 0
 			GAME.stage.removeChild(@sprite)
-
 
 	###
 	check if object is dead
@@ -102,14 +102,14 @@ define [
 		setTimeout(
 			() => 	
 				@sprite.tint = 0xFFFFFF
-	 ,50)
+		,50)
 
 	GameObject::respawnBlink = () ->
 		@sprite.tint = 0x0000FF
 		setTimeout(
 			() => 	
 				@sprite.tint = 0xFFFFFF
-	 ,2000)
+		,2000)
 
 	GameObject::respawn = () ->
 		@setCollidable(false)

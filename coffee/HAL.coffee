@@ -31,6 +31,7 @@ define [
 		@renderer.view.style.display = "block"
 		position = 0
 		render = =>
+			isGameOverDisplayed = false
 			LAST_FRAME_ID = requestAnimFrame(render)
 			position += 10
 			GAME.moveBackground(position)
@@ -55,11 +56,12 @@ define [
 				npc.move()
 				if npc?.bullets
 					for bullet in npc?.bullets
+						bullet?.move()
+						continue if not GAME.player.isCollidable
 						if bullet and Geometry.rectangleIntersectsRectangle(bullet.sprite.getBounds(), GAME.player.sprite.getBounds())
 							GAME.player.decreaseHealth(bullet.damage)
 							GAME.Hud.updateHealthBarAndLifes(GAME.player.health, GAME.player.baseHealth, GAME.player.lifes)
 							npc.removeBullet(bullet.uid)
-						bullet?.move()
 
 			for bullet in GAME.player.bullets
 				for npc in GAME.npcs
@@ -78,12 +80,13 @@ define [
 						GAME.player.removeBullet(bullet.uid)
 				bullet?.move()
 
-			if GAME.player.isDead()
-				console.log "game over"
+			if GAME.player.isDead() and not isGameOverDisplayed
+				GAME.gameOver()
+				isGameOverDisplayed = true
 			else if gameWon 
 				alert "congratulations! you win"
-			else
-				@renderer.render(stage)
+			
+			@renderer.render(stage)
 		render()
 		return @
 

@@ -64,7 +64,10 @@
     	update the number of lifes of game object
      */
     GameObject.prototype.updateLifes = function(lifes) {
-      return this.lifes += lifes;
+      this.lifes += lifes;
+      if (this.lifes <= 0) {
+        return this.lifes = 0;
+      }
     };
 
     /*

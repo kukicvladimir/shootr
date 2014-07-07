@@ -35,7 +35,8 @@
       position = 0;
       render = (function(_this) {
         return function() {
-          var LAST_FRAME_ID, bullet, gameWon, metheor, npc, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _len5, _m, _n, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
+          var LAST_FRAME_ID, bullet, gameWon, isGameOverDisplayed, metheor, npc, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _len5, _m, _n, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
+          isGameOverDisplayed = false;
           LAST_FRAME_ID = requestAnimFrame(render);
           position += 10;
           GAME.moveBackground(position);
@@ -76,13 +77,16 @@
               _ref2 = npc != null ? npc.bullets : void 0;
               for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
                 bullet = _ref2[_k];
+                if (bullet != null) {
+                  bullet.move();
+                }
+                if (!GAME.player.isCollidable) {
+                  continue;
+                }
                 if (bullet && Geometry.rectangleIntersectsRectangle(bullet.sprite.getBounds(), GAME.player.sprite.getBounds())) {
                   GAME.player.decreaseHealth(bullet.damage);
                   GAME.Hud.updateHealthBarAndLifes(GAME.player.health, GAME.player.baseHealth, GAME.player.lifes);
                   npc.removeBullet(bullet.uid);
-                }
-                if (bullet != null) {
-                  bullet.move();
                 }
               }
             }
@@ -121,13 +125,13 @@
               bullet.move();
             }
           }
-          if (GAME.player.isDead()) {
-            return console.log("game over");
+          if (GAME.player.isDead() && !isGameOverDisplayed) {
+            GAME.gameOver();
+            isGameOverDisplayed = true;
           } else if (gameWon) {
-            return alert("congratulations! you win");
-          } else {
-            return _this.renderer.render(stage);
+            alert("congratulations! you win");
           }
+          return _this.renderer.render(stage);
         };
       })(this);
       render();

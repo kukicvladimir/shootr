@@ -54,7 +54,4 @@ define [
 		@direction += -@turningSpeed * 0.1
 		@sprite.rotation = @direction - Math.PI/2;
 		
-
-
-
 	return  Metheor

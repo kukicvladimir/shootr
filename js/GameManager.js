@@ -34,14 +34,17 @@
       this.assets.showSpinner();
       this.assets.load();
       this.stage = new PIXI.Stage(0xFFFFFF);
+      this.gameover = PIXI.Sprite.fromImage("resources/img/gameover.png");
       this.background = PIXI.Sprite.fromImage("resources/img/sky1.png");
       this.background2 = PIXI.Sprite.fromImage("resources/img/sky2.png");
       this.background.position.x = 0;
       this.background.position.y = 0;
+      this.gameover.visible = false;
       this.stage.addChild(this.background);
       this.stage.addChild(this.background2);
       this.player = new Player();
       this.stage.addChild(this.player.sprite);
+      this.stage.addChild(this.gameover);
       this.Hud = new HUDManager();
       this.npcs = [];
       for (i = _i = 0; _i < 10; i = ++_i) {
@@ -56,6 +59,10 @@
       }
       HAL.startRendering(this.stage);
       return this.assets.hideSpinner();
+    };
+    GameManager.prototype.gameOver = function() {
+      GAME.player.setCollidable(false);
+      return this.gameover.visible = true;
     };
     GameManager.prototype.moveBackground = function(position) {
       this.background.y = position * 0.1;
