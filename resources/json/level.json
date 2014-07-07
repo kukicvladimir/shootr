@@ -1,0 +1,10 @@
+{
+	"level1" : {
+		"NPC": 10,
+		"RetardedNPC": 3
+	},
+	"level2": {
+		"NPC": 10,
+		"RetardedNPC": 3
+	}
+}

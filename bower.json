@@ -1,0 +1,12 @@
+{
+    "name": "spaceShooter",
+    "version": "0.0.1",
+    "dependencies": {
+        "jquery": null,
+        "jquery-ui": null,
+        "requirejs": null,
+        "pixi": null,
+        "handlebars": null,
+        "SoundJS": null
+    }
+}
