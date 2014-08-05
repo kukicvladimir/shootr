@@ -6,7 +6,8 @@
       "jquery": "vendor/jquery/dist/jquery.min",
       "jquery-ui": "vendor/jquery-ui/ui/minified/jquery-ui.min",
       "PIXI": "vendor/pixi/bin/pixi",
-      "handlebars": "vendor/handlebars/handlebars.min"
+      "handlebars": "vendor/handlebars/handlebars.min",
+      "async": "vendor/async/lib/async"
     },
     shim: {
       "jquery": {
@@ -21,14 +22,18 @@
       },
       "handlebars": {
         exports: "Handlebars"
+      },
+      "async": {
+        exports: "async"
       }
     }
   });
 
-  require(["HAL", "GameManager", "handlebars"], function(HAL, GameManager, Handlebars) {
+  require(["GameLoop", "GameManager", "handlebars", "async"], function(GameLoop, GameManager, Handlebars, async) {
     var onKeyDown, onKeyUp;
     window.Handlebars = Handlebars;
-    HAL.on("READY", (function(_this) {
+    window.async = async;
+    GameLoop.on("READY", (function(_this) {
       return function() {
         var GAME;
         GAME = new GameManager();
@@ -36,7 +41,7 @@
         return GAME.start();
       };
     })(this));
-    HAL.start();
+    GameLoop.start();
     onKeyDown = function(evt) {
       switch (evt.keyCode) {
         case 39:

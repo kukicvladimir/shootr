@@ -7,6 +7,7 @@
         "requirejs": null,
         "pixi": null,
         "handlebars": null,
-        "SoundJS": null
+        "SoundJS": null,
+        "async": null
     }
 }

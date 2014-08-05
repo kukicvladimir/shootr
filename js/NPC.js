@@ -4,23 +4,23 @@
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     __slice = [].slice;
 
-  define(["GameObject", "Bullet"], function(GameObject, Bullet) {
+  define(["GameObject", "Bullet", "Vector2"], function(GameObject, Bullet, Vector2) {
     var NPC;
     NPC = (function(_super) {
       __extends(NPC, _super);
 
       function NPC() {
-        var opts;
+        var opts, position, velocity;
         opts = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+        position = new Vector2(0, 0);
+        velocity = new Vector2(2, 2);
         opts = {
-          x: 0,
-          y: 0,
+          position: position,
+          velocity: velocity,
           health: 3,
           lifes: 1,
           speed: 2,
           damage: 3,
-          dx: 2,
-          dy: 2,
           isCollidable: true,
           isMovable: true,
           isShieldActive: false,
@@ -39,8 +39,8 @@
     })(GameObject);
     NPC.prototype.init = function() {
       this.bullets = [];
-      this.sprite.position.x = Math.random() * (HAL.renderer.width / 2);
-      this.sprite.position.y = Math.random() * ((HAL.renderer.height - 200) / 2);
+      this.position.x = Math.random() * (GameLoop.renderer.width / 2);
+      this.position.y = Math.random() * ((GameLoop.renderer.height - 200) / 2);
       return this.move();
     };
     NPC.prototype.move = function() {
@@ -53,33 +53,31 @@
       if (!this.isMovable) {
         return;
       }
-      this.sprite.position.x += this.dx * this.speed;
-      this.sprite.position.y += this.dy * this.speed;
-      if (this.sprite.position.x < 0) {
-        this.dx = Math.abs(this.dx);
+      this.position.x += this.velocity.x * this.speed;
+      this.position.y += this.velocity.y * this.speed;
+      if (this.position.x < 0) {
+        this.velocity.x = Math.abs(this.velocity.x);
       }
-      if (this.sprite.position.x > HAL.renderer.width - this.sprite.width) {
-        this.dx = -this.dx;
+      if (this.position.x > GameLoop.renderer.width - this.sprite.width) {
+        this.velocity.x = -this.velocity.x;
       }
-      if (this.sprite.position.y < 0) {
-        this.dy = Math.abs(this.dy);
+      if (this.position.y < 0) {
+        this.velocity.y = Math.abs(this.velocity.y);
       }
-      if (this.sprite.position.y > (HAL.renderer.height - this.sprite.height) / 2) {
-        return this.dy = -this.dy;
+      if (this.position.y > (GameLoop.renderer.height - this.sprite.height) / 2) {
+        return this.velocity.y = -this.velocity.y;
       }
     };
     NPC.prototype.shoot = function() {
-      var bullet, opts;
+      var bullet, opts, position, velocity;
       this.removeBullets();
       if (Math.random() > 0.99) {
+        position = new Vector2(this.position.x + this.sprite.width / 2, this.position.y);
+        velocity = new Vector2(0, 1);
         opts = {
+          position: position,
+          velocity: velocity,
           damage: this.damage,
-          dx: 0,
-          dy: 1,
-          y: this.sprite.position.y,
-          x: this.sprite.position.x + this.sprite.width / 2,
-          directionX: 1,
-          directionY: 1,
           isCollidable: true,
           isMovable: true,
           speed: 11,
@@ -113,7 +111,7 @@
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         bullet = _ref[_i];
-        if ((bullet != null ? bullet.sprite.position.y : void 0) > HAL.renderer.height) {
+        if ((bullet != null ? bullet.position.y : void 0) > GameLoop.renderer.height) {
           ind = this.bullets.indexOf(bullet);
           GAME.stage.removeChild(bullet.sprite);
           _results.push(this.bullets.splice(ind, 1));

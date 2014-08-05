@@ -9,9 +9,9 @@ define [
 ],
 (PIXI, Util, EventDispatcher, Geometry, Metheor) ->
 
-	class HAL extends EventDispatcher
+	class GameLoop extends EventDispatcher
 
-	HAL::start = ->
+	GameLoop::start = ->
 		return if @renderer?
 		@renderer = new PIXI.autoDetectRenderer($(window).width(), $(window).height())
 		@renderer.view.style.display = "block"
@@ -23,11 +23,11 @@ define [
 		@trigger "READY"
 		return @
 
-	window.HAL = new HAL
+	window.GameLoop = new GameLoop
 	window.PIXI = PIXI
 		
 
-	HAL::startRendering = (stage) ->		
+	GameLoop::startRendering = (stage) ->		
 		@renderer.view.style.display = "block"
 		position = 0
 		render = =>
@@ -35,6 +35,10 @@ define [
 			LAST_FRAME_ID = requestAnimFrame(render)
 			position += 10
 			GAME.moveBackground(position)
+
+			if GAME.isWaveComplete()
+				GAME.createWave()
+			
 
 			GAME.player.moveRight() if GAME.rightButton
 			GAME.player.moveLeft() if GAME.leftButton
@@ -47,7 +51,7 @@ define [
 				GAME.stage.addChildAt(metheor.sprite, 4)
 				GAME.metheors.push metheor
 
-			gameWon = true
+			# gameWon = true
 			for metheor in GAME.metheors 
 				metheor.move()
 
@@ -58,36 +62,42 @@ define [
 					for bullet in npc?.bullets
 						bullet?.move()
 						continue if not GAME.player.isCollidable
+						continue if GAME.player.isDead()
 						if bullet and Geometry.rectangleIntersectsRectangle(bullet.sprite.getBounds(), GAME.player.sprite.getBounds())
 							GAME.player.decreaseHealth(bullet.damage)
 							GAME.Hud.updateHealthBarAndLifes(GAME.player.health, GAME.player.baseHealth, GAME.player.lifes)
 							npc.removeBullet(bullet.uid)
 
 			for bullet in GAME.player.bullets
-				for npc in GAME.npcs
-					continue if npc.isDead()
-					if bullet and Geometry.rectangleIntersectsRectangle(bullet.sprite.getBounds(), npc.sprite.getBounds())
-						npc.decreaseHealth(bullet.damage)
-						GAME.Hud.updateScore(50)
-						GAME.player.removeBullet(bullet.uid)
+				if GAME.npcs
+					for npc in GAME.npcs
+						continue if npc.isDead()
+						if bullet and Geometry.rectangleIntersectsRectangle(bullet.sprite.getBounds(), npc.sprite.getBounds())
+							npc.decreaseHealth(bullet.damage)
+							GAME.Hud.updateScore(50)
+							GAME.player.removeBullet(bullet.uid)
 
 				for metheor in GAME.metheors
 					continue if metheor.isDead()
 					continue if not metheor.isCollidable
+					#check if player is hit by metheor
+					if Geometry.rectangleIntersectsRectangle(metheor.sprite.getBounds(), GAME.player.sprite.getBounds())
+						GAME.player.decreaseHealth(metheor.damage)
+
 					if bullet and Geometry.rectangleIntersectsRectangle(bullet.sprite.getBounds(), metheor.sprite.getBounds())
 						metheor.decreaseHealth(bullet.damage)
 						GAME.Hud.updateScore(50)
 						GAME.player.removeBullet(bullet.uid)
 				bullet?.move()
 
-			if GAME.player.isDead() and not isGameOverDisplayed
-				GAME.gameOver()
-				isGameOverDisplayed = true
-			else if gameWon 
-				alert "congratulations! you win"
+			# if GAME.player.isDead() and not isGameOverDisplayed
+			# 	GAME.gameOver()
+			# 	isGameOverDisplayed = true
+			# else if gameWon 
+			# 	alert "congratulations! you win"
 			
 			@renderer.render(stage)
 		render()
 		return @
 
-	return (window.HAL)
+	return (window.GameLoop)

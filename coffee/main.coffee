@@ -7,6 +7,7 @@ require.config
 		"jquery-ui": "vendor/jquery-ui/ui/minified/jquery-ui.min"
 		"PIXI": "vendor/pixi/bin/pixi"
 		"handlebars": "vendor/handlebars/handlebars.min"
+		"async": "vendor/async/lib/async"
 	shim:
 		"jquery":
 			exports: "$"
@@ -21,24 +22,30 @@ require.config
 		"handlebars":
 			exports: "Handlebars"
 
+		"async":
+			exports: "async"
+
 require [
-	"HAL"
+	"GameLoop"
 	"GameManager"
 	"handlebars"
+	"async"
 ],
 (
-	HAL
+	GameLoop
 	GameManager
 	Handlebars
+	async
 ) ->
 	
 	window.Handlebars = Handlebars
+	window.async = async
 
-	HAL.on "READY", =>
+	GameLoop.on "READY", =>
 		GAME = new GameManager()
 		window.GAME = GAME
 		GAME.start()
-	HAL.start() 
+	GameLoop.start() 
 
 	onKeyDown = (evt) ->
 		switch evt.keyCode

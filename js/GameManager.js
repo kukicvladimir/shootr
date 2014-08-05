@@ -29,8 +29,36 @@
     GameManager.prototype.start = function() {
       return this.startGame();
     };
+    GameManager.prototype.createWave = function() {
+      var i, npc, retardedNPC, _i, _j, _ref, _ref1, _results;
+      this.npcs = [];
+      for (i = _i = 0, _ref = ~~(Math.random() * 30); 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+        npc = new NPC();
+        this.stage.addChild(npc.sprite);
+        this.npcs.push(npc);
+      }
+      _results = [];
+      for (i = _j = 0, _ref1 = ~~(Math.random() * 5); 0 <= _ref1 ? _j < _ref1 : _j > _ref1; i = 0 <= _ref1 ? ++_j : --_j) {
+        retardedNPC = new RetardedNPC();
+        this.stage.addChild(retardedNPC.sprite);
+        _results.push(this.npcs.push(retardedNPC));
+      }
+      return _results;
+    };
+    GameManager.prototype.isWaveComplete = function() {
+      var npc, out, _i, _len, _ref;
+      if (this.npcs) {
+        _ref = this.npcs;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          npc = _ref[_i];
+          if (npc.health > 0) {
+            return out = false;
+          }
+        }
+      }
+      return true;
+    };
     GameManager.prototype.startGame = function() {
-      var i, npc, retardedNPC, _i, _j;
       this.assets.showSpinner();
       this.assets.load();
       this.stage = new PIXI.Stage(0xFFFFFF);
@@ -46,18 +74,7 @@
       this.stage.addChild(this.player.sprite);
       this.stage.addChild(this.gameover);
       this.Hud = new HUDManager();
-      this.npcs = [];
-      for (i = _i = 0; _i < 10; i = ++_i) {
-        npc = new NPC();
-        this.stage.addChild(npc.sprite);
-        this.npcs.push(npc);
-      }
-      for (i = _j = 0; _j < 3; i = ++_j) {
-        retardedNPC = new RetardedNPC();
-        this.stage.addChild(retardedNPC.sprite);
-        this.npcs.push(retardedNPC);
-      }
-      HAL.startRendering(this.stage);
+      GameLoop.startRendering(this.stage);
       return this.assets.hideSpinner();
     };
     GameManager.prototype.gameOver = function() {

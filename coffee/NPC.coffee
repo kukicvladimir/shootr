@@ -3,23 +3,25 @@
 define [
 	"GameObject"
 	"Bullet"
+	"Vector2"
 ],
 (
 	GameObject
 	Bullet
+	Vector2
 ) ->
 
 	class NPC extends GameObject
 		constructor: (opts...) ->
+			position = new Vector2(0, 0)
+			velocity = new Vector2(2, 2)
 			opts =
-				x: 0
-				y: 0
+				position: position
+				velocity: velocity
 				health: 3
 				lifes: 1
 				speed: 2
 				damage: 3
-				dx: 2
-				dy: 2
 				isCollidable: true
 				isMovable: true
 				isShieldActive: false
@@ -33,8 +35,8 @@ define [
 
 	NPC::init = () ->
 		@bullets = []
-		@sprite.position.x = Math.random() * (HAL.renderer.width / 2)
-		@sprite.position.y = Math.random() * ((HAL.renderer.height - 200)/ 2 )
+		@position.x = Math.random() * (GameLoop.renderer.width / 2)
+		@position.y = Math.random() * ((GameLoop.renderer.height - 200)/ 2 )
 		@move()
 
 	NPC::move = () ->
@@ -42,25 +44,23 @@ define [
 			@shoot()
 		return if @isDead()
 		return if not @isMovable
-		@sprite.position.x += @dx*@speed
-		@sprite.position.y += @dy*@speed
-		@dx = Math.abs(@dx) if @sprite.position.x < 0
-		@dx = -@dx if @sprite.position.x > HAL.renderer.width - @sprite.width
+		@position.x += @velocity.x * @speed
+		@position.y += @velocity.y * @speed
+		@velocity.x = Math.abs(@velocity.x) if @position.x < 0
+		@velocity.x = -@velocity.x if @position.x > GameLoop.renderer.width - @sprite.width
 
-		@dy = Math.abs(@dy) if @sprite.position.y < 0
-		@dy = -@dy if @sprite.position.y > (HAL.renderer.height - @sprite.height)/2
+		@velocity.y = Math.abs(@velocity.y) if @position.y < 0
+		@velocity.y = -@velocity.y if @position.y > (GameLoop.renderer.height - @sprite.height)/2
 
 	NPC::shoot = () ->
 		@removeBullets()
 		if Math.random() > 0.99
+			position = new Vector2(@position.x + @sprite.width/2, @position.y)
+			velocity = new Vector2(0,1)
 			opts = 
+				position: position
+				velocity: velocity
 				damage: @damage
-				dx: 0
-				dy: 1
-				y: @sprite.position.y
-				x: @sprite.position.x + @sprite.width/2
-				directionX: 1
-				directionY: 1
 				isCollidable: true
 				isMovable: true
 				speed: 11
@@ -79,7 +79,7 @@ define [
 				
 	NPC::removeBullets = () ->
 		for bullet in @bullets
-			if bullet?.sprite.position.y > HAL.renderer.height
+			if bullet?.position.y > GameLoop.renderer.height
 				ind = @bullets.indexOf(bullet)
 				GAME.stage.removeChild(bullet.sprite)
 				@bullets.splice(ind, 1)

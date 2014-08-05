@@ -35,6 +35,25 @@ define [
 	GameManager::start = ->
 		@startGame()
 
+	GameManager::createWave = ->
+		@npcs = []
+		for i in [0...~~(Math.random()*30)]
+			npc = new NPC()
+			@stage.addChild(npc.sprite)
+			@npcs.push npc
+
+		for i in [0...~~(Math.random()*5)]
+			retardedNPC = new RetardedNPC()
+			@stage.addChild(retardedNPC.sprite)
+			@npcs.push retardedNPC
+
+	GameManager::isWaveComplete = ->
+		if @npcs
+			for npc in @npcs
+				return out = false if npc.health > 0
+				
+		return true
+
 	GameManager::startGame = ->
 		@assets.showSpinner()
 		@assets.load()
@@ -52,24 +71,11 @@ define [
 		@player = new Player()
 		@stage.addChild(@player.sprite)
 		@stage.addChild(@gameover)
-		#@stage.addChild(@player.healthBar)
 
 		@Hud = new HUDManager()
 
-		@npcs = []
-		for i in [0...10]
-			npc = new NPC()
-			@stage.addChild(npc.sprite)
-			@npcs.push npc
-
-		for i in [0...3]
-			retardedNPC = new RetardedNPC()
-			@stage.addChild(retardedNPC.sprite)
-			@npcs.push retardedNPC
-
-		HAL.startRendering(@stage)
+		GameLoop.startRendering(@stage)
 		@assets.hideSpinner()
-		# @Hud.showDialog("MAIN_MENU")
 
 	GameManager::gameOver = () ->
 		GAME.player.setCollidable(false)

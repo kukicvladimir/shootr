@@ -4,18 +4,18 @@
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   define(["PIXI", "Util", "EventDispatcher", "Geometry", "Metheor"], function(PIXI, Util, EventDispatcher, Geometry, Metheor) {
-    var HAL;
-    HAL = (function(_super) {
-      __extends(HAL, _super);
+    var GameLoop;
+    GameLoop = (function(_super) {
+      __extends(GameLoop, _super);
 
-      function HAL() {
-        return HAL.__super__.constructor.apply(this, arguments);
+      function GameLoop() {
+        return GameLoop.__super__.constructor.apply(this, arguments);
       }
 
-      return HAL;
+      return GameLoop;
 
     })(EventDispatcher);
-    HAL.prototype.start = function() {
+    GameLoop.prototype.start = function() {
       if (this.renderer != null) {
         return;
       }
@@ -27,9 +27,9 @@
       this.trigger("READY");
       return this;
     };
-    window.HAL = new HAL;
+    window.GameLoop = new GameLoop;
     window.PIXI = PIXI;
-    HAL.prototype.startRendering = function(stage) {
+    GameLoop.prototype.startRendering = function(stage) {
       var position, render;
       this.renderer.view.style.display = "block";
       position = 0;
@@ -40,6 +40,9 @@
           LAST_FRAME_ID = requestAnimFrame(render);
           position += 10;
           GAME.moveBackground(position);
+          if (GAME.isWaveComplete()) {
+            GAME.createWave();
+          }
           if (GAME.rightButton) {
             GAME.player.moveRight();
           }
@@ -60,7 +63,6 @@
             GAME.stage.addChildAt(metheor.sprite, 4);
             GAME.metheors.push(metheor);
           }
-          gameWon = true;
           _ref = GAME.metheors;
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             metheor = _ref[_i];
@@ -83,6 +85,9 @@
                 if (!GAME.player.isCollidable) {
                   continue;
                 }
+                if (GAME.player.isDead()) {
+                  continue;
+                }
                 if (bullet && Geometry.rectangleIntersectsRectangle(bullet.sprite.getBounds(), GAME.player.sprite.getBounds())) {
                   GAME.player.decreaseHealth(bullet.damage);
                   GAME.Hud.updateHealthBarAndLifes(GAME.player.health, GAME.player.baseHealth, GAME.player.lifes);
@@ -94,16 +99,18 @@
           _ref3 = GAME.player.bullets;
           for (_l = 0, _len3 = _ref3.length; _l < _len3; _l++) {
             bullet = _ref3[_l];
-            _ref4 = GAME.npcs;
-            for (_m = 0, _len4 = _ref4.length; _m < _len4; _m++) {
-              npc = _ref4[_m];
-              if (npc.isDead()) {
-                continue;
-              }
-              if (bullet && Geometry.rectangleIntersectsRectangle(bullet.sprite.getBounds(), npc.sprite.getBounds())) {
-                npc.decreaseHealth(bullet.damage);
-                GAME.Hud.updateScore(50);
-                GAME.player.removeBullet(bullet.uid);
+            if (GAME.npcs) {
+              _ref4 = GAME.npcs;
+              for (_m = 0, _len4 = _ref4.length; _m < _len4; _m++) {
+                npc = _ref4[_m];
+                if (npc.isDead()) {
+                  continue;
+                }
+                if (bullet && Geometry.rectangleIntersectsRectangle(bullet.sprite.getBounds(), npc.sprite.getBounds())) {
+                  npc.decreaseHealth(bullet.damage);
+                  GAME.Hud.updateScore(50);
+                  GAME.player.removeBullet(bullet.uid);
+                }
               }
             }
             _ref5 = GAME.metheors;
@@ -115,6 +122,9 @@
               if (!metheor.isCollidable) {
                 continue;
               }
+              if (Geometry.rectangleIntersectsRectangle(metheor.sprite.getBounds(), GAME.player.sprite.getBounds())) {
+                GAME.player.decreaseHealth(metheor.damage);
+              }
               if (bullet && Geometry.rectangleIntersectsRectangle(bullet.sprite.getBounds(), metheor.sprite.getBounds())) {
                 metheor.decreaseHealth(bullet.damage);
                 GAME.Hud.updateScore(50);
@@ -125,19 +135,13 @@
               bullet.move();
             }
           }
-          if (GAME.player.isDead() && !isGameOverDisplayed) {
-            GAME.gameOver();
-            isGameOverDisplayed = true;
-          } else if (gameWon) {
-            alert("congratulations! you win");
-          }
           return _this.renderer.render(stage);
         };
       })(this);
       render();
       return this;
     };
-    return window.HAL;
+    return window.GameLoop;
   });
 
 }).call(this);

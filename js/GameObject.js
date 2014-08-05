@@ -4,7 +4,7 @@
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     __slice = [].slice;
 
-  define(["EventDispatcher"], function(EventDispatcher) {
+  define(["EventDispatcher", "Vector2"], function(EventDispatcher, Vector2) {
     var GameObject, UID;
     UID = 0;
     GameObject = (function(_super) {
@@ -15,19 +15,18 @@
         opts = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
         GameObject.__super__.constructor.apply(this, arguments);
         this.uid = UID++;
-        this.x = opts[0].x;
-        this.y = opts[0].y;
+        this.position = opts[0].position;
+        this.speed = GAME.speed + opts[0].speed;
+        this.velocity = opts[0].velocity;
         this.health = opts[0].health;
         this.baseHealth = opts[0].health;
         this.lifes = opts[0].lifes;
-        this.speed = GAME.speed + opts[0].speed;
         this.damage = opts[0].damage;
         this.isShieldActive = opts[0].isShieldActive;
-        this.dx = opts[0].dx;
-        this.dy = opts[0].dy;
         this.isMovable = opts[0].isMovable || false;
         this.isCollidable = opts[0].isCollidable || false;
         this.sprite = PIXI.Sprite.fromImage(opts[0].sprite);
+        this.sprite.position = this.position;
         this.lastShotDate = null;
         this.shotDelay = opts[0].shotDelay;
         return this;

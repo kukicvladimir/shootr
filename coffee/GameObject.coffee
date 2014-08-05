@@ -2,9 +2,11 @@
 
 define [
 	"EventDispatcher"
+	"Vector2"
 ],
 (
 	EventDispatcher
+	Vector2
 ) ->
 	
 	UID = 0
@@ -12,23 +14,24 @@ define [
 		constructor: (opts...)->
 			super
 			@uid = UID++
-			@x = opts[0].x
-			@y = opts[0].y
+			@position = opts[0].position
+			@speed = GAME.speed + opts[0].speed
+			@velocity = opts[0].velocity
+
 			@health = opts[0].health
 			@baseHealth = opts[0].health
 			@lifes = opts[0].lifes
-			@speed = GAME.speed + opts[0].speed
 			@damage = opts[0].damage
+			
 			@isShieldActive = opts[0].isShieldActive
-			@dx = opts[0].dx
-			@dy = opts[0].dy
 			@isMovable = opts[0].isMovable || false
 			@isCollidable = opts[0].isCollidable || false
-			@sprite = PIXI.Sprite.fromImage(opts[0].sprite)
-			@lastShotDate = null
-			# @healthBar = new PIXI.Graphics()
 			
+			@sprite = PIXI.Sprite.fromImage(opts[0].sprite)
+			@sprite.position = @position
+			@lastShotDate = null
 			@shotDelay = opts[0].shotDelay
+			
 			return @
 
 	###

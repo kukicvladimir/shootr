@@ -2,25 +2,27 @@
 
 define [
 	"GameObject"
+	"Vector2"
 ],
 (
 	GameObject
+	Vector2
 ) ->
 
 	class Metheor extends GameObject
 		constructor: (opts...) ->
+			position = new Vector2(0, 0)
 			isCollidable = if Math.random() > 0.5 then true else false
 			dirx = [-2, -1, 0, 1, 2]
 			dx = dirx[Math.round(Math.random()*dirx.length)]
+			velocity = new Vector2(dx, 2)
 			opts =
-				x: 0
-				y: 0
+				position: position
 				health: 3
 				lifes: 1
 				speed: 3
 				damage: 3
-				dx: dx
-				dy: 2
+				velocity: velocity
 				isCollidable: isCollidable
 				isMovable: true
 				isShieldActive: false
@@ -33,13 +35,15 @@ define [
 			return @
 
 	Metheor::init = () ->
-		@sprite.position.x = Math.random() * (HAL.renderer.width / 2)
-		@sprite.position.y = -300
+		@position.x = Math.random() * (GameLoop.renderer.width / 2)
+		@position.y = -300
+		@sprite.position = @position
 		if not @isCollidable
-			@sprite.tint = 0x222222
+			@sprite.tint = 0x333333
 		size = Math.random() * 0.3
 		@speed = (30-size*100) / 3#smaller metheors go faster
 		@health = size*20
+		@damage = size * 20
 		@sprite.anchor.x = 0.5
 		@sprite.anchor.y = 0.5
 		@sprite.scale.x = size
@@ -49,8 +53,8 @@ define [
 		@move()
 
 	Metheor::move = () ->
-		@sprite.position.x += @dx*@speed
-		@sprite.position.y += @dy*@speed
+		@position.x += @velocity.x * @speed
+		@position.y += @velocity.y * @speed
 		@direction += -@turningSpeed * 0.1
 		@sprite.rotation = @direction - Math.PI/2;
 		
