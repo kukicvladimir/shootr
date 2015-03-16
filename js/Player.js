@@ -35,52 +35,10 @@
 
     })(GameObject);
     Player.prototype.init = function() {
-      var v;
       this.particles = [];
       this.bullets = [];
       this.position.x = GameLoop.renderer.width / 2 - this.sprite.width / 2;
-      this.position.y = 600;
-      return v = new Vector2();
-    };
-    Player.prototype.moveLeft = function() {
-      if (!this.isMovable) {
-        return;
-      }
-      this.velocity.x = -1;
-      this.position.x += this.velocity.x * this.speed;
-      if (this.position.x < 0) {
-        return this.position.x = 0;
-      }
-    };
-    Player.prototype.moveRight = function() {
-      if (!this.isMovable) {
-        return;
-      }
-      this.velocity.x = 1;
-      this.position.x += this.velocity.x * this.speed;
-      if (this.position.x > GameLoop.renderer.width - this.sprite.width) {
-        return this.position.x = GameLoop.renderer.width - this.sprite.width;
-      }
-    };
-    Player.prototype.moveUp = function() {
-      if (!this.isMovable) {
-        return;
-      }
-      this.velocity.y = -1;
-      this.position.y += this.velocity.y * this.speed;
-      if (this.position.y < GameLoop.renderer.height / 2) {
-        return this.position.y = GameLoop.renderer.height / 2;
-      }
-    };
-    Player.prototype.moveDown = function() {
-      if (!this.isMovable) {
-        return;
-      }
-      this.velocity.y = 1;
-      this.position.y += this.velocity.y * this.speed;
-      if (this.position.y > GameLoop.renderer.height - this.sprite.height) {
-        return this.position.y = GameLoop.renderer.height - this.sprite.height;
-      }
+      return this.position.y = 600;
     };
     Player.prototype.shoot = function() {
       var bullet, opts, position, velocity;

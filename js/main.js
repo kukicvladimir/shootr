@@ -4,7 +4,7 @@
     baseUrl: "js",
     paths: {
       "jquery": "vendor/jquery/dist/jquery.min",
-      "jquery-ui": "vendor/jquery-ui/ui/minified/jquery-ui.min",
+      "jquery-ui": "vendor/jquery-ui/jquery-ui.min",
       "PIXI": "vendor/pixi/bin/pixi",
       "handlebars": "vendor/handlebars/handlebars.min",
       "async": "vendor/async/lib/async"

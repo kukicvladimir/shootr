@@ -5,7 +5,8 @@
   "private": true,
   "dependencies": {
     "coffee-script": "latest",
-    "mocha": "latest"
+    "mocha": "latest",
+    "node-static": "^0.7.6"
   },
   "devDependencies": {
     "grunt": "~0.4.2",

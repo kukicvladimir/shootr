@@ -46,13 +46,13 @@
       return _results;
     };
     GameManager.prototype.isWaveComplete = function() {
-      var npc, out, _i, _len, _ref;
-      if (this.npcs) {
+      var npc, _i, _len, _ref;
+      if (this.npcs != null) {
         _ref = this.npcs;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           npc = _ref[_i];
           if (npc.health > 0) {
-            return out = false;
+            return false;
           }
         }
       }

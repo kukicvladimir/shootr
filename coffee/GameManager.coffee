@@ -48,11 +48,11 @@ define [
 			@npcs.push retardedNPC
 
 	GameManager::isWaveComplete = ->
-		if @npcs
-			for npc in @npcs
-				return out = false if npc.health > 0
+    if @npcs?
+      for npc in @npcs
+        return false if npc.health > 0
 				
-		return true
+    return true
 
 	GameManager::startGame = ->
 		@assets.showSpinner()
