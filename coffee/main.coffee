@@ -1,67 +1,21 @@
 "use strict"
 
-require.config
-	baseUrl: "js"
-	paths:
-		"jquery": "vendor/jquery/dist/jquery.min"
-		"jquery-ui": "vendor/jquery-ui/jquery-ui.min"
-		"PIXI": "vendor/pixi/bin/pixi"
-		"handlebars": "vendor/handlebars/handlebars.min"
-		"async": "vendor/async/lib/async"
-	shim:
-		"jquery":
-			exports: "$"
+PIXI = require("./vendor/pixi/bin/pixi.dev.js")
+$ = require("./vendor/jquery/dist/jquery.js")
+GameManager = require("./GameManager.js")
+splashScreen = require("./scenes/SplashScreen.js")
+mainMenu = require("./scenes/MainMenu.js")
+level1 = require("./scenes/Level1.js")
 
-		"jquery-ui":
-			deps: ["jquery"]
-			exports: "$"
+window.PIXI = PIXI
+window.$ = $
 
-		"PIXI":
-			exports: "PIXI"
+gameManager = new GameManager()
+gameManager.create($(window).width(), $(window).height())
+window.GAME = gameManager
 
-		"handlebars":
-			exports: "Handlebars"
+splashScreen = gameManager.createScene("splashScreen", splashScreen)
+mainMenu = gameManager.createScene("mainMenu", mainMenu)
+level1 = gameManager.createScene("level1", level1)
 
-		"async":
-			exports: "async"
-
-require [
-	"GameLoop"
-	"GameManager"
-	"handlebars"
-	"async"
-],
-(
-	GameLoop
-	GameManager
-	Handlebars
-	async
-) ->
-	
-	window.Handlebars = Handlebars
-	window.async = async
-
-	GameLoop.on "READY", =>
-		GAME = new GameManager()
-		window.GAME = GAME
-		GAME.start()
-	GameLoop.start() 
-
-	onKeyDown = (evt) ->
-		switch evt.keyCode
-			when 39 then GAME.rightButton = true
-			when 37 then GAME.leftButton = true
-			when 38 then GAME.upButton = true
-			when 40 then GAME.downButton = true
-			when 32 then GAME.shootButton = true
-
-	onKeyUp = (evt) ->
-		switch evt.keyCode
-			when 39 then GAME.rightButton = false
-			when 37 then GAME.leftButton = false
-			when 38 then GAME.upButton = false
-			when 40 then GAME.downButton = false
-			when 32 then GAME.shootButton = false
-	
-	$(document).keydown(onKeyDown)
-	$(document).keyup(onKeyUp)
+gameManager.goToScene("splashScreen")

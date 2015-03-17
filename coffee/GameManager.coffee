@@ -1,92 +1,60 @@
 "use strict"
+Scene = require("./Scene")
+class GameManager
+  constructor: () ->
+    @renderer = PIXI.IRenderer
+    @currentScene = null
+    @scenes = {}
 
-define [
-	"EventDispatcher"
-	"HUDManager" 
-	"AssetsLoader"
-	"Player"
-	"NPC"
-	"RetardedNPC"
-],
-(EventDispatcher
-	HUDManager
-	AssetsLoader
-	Player
-	NPC
-	RetardedNPC
-) ->
-	
-	class GameManager extends EventDispatcher
-		constructor: () ->
-			super
-			@speed = 1
-			@rightButton = false
-			@leftButton = false
-			@upButton = false
-			@downButton = false
-			@shootButton = false
-			@init()
+    @speed = 1
+    @rightButton = false
+    @leftButton = false
+    @upButton = false
+    @downButton = false
+    @shootButton = false
 
-	GameManager::init = ->
-		@assets = new AssetsLoader()
-		@metheors = []
-		return
+    return @
+###
+Create scene
+###
+GameManager::createScene = (id, TScene) ->
+  return undefined if @scenes[id]
 
-	GameManager::start = ->
-		@startGame()
+  scene = new TScene()
+  @scenes[id] = scene
 
-	GameManager::createWave = ->
-		@npcs = []
-		for i in [0...~~(Math.random()*30)]
-			npc = new NPC()
-			@stage.addChild(npc.sprite)
-			@npcs.push npc
+  return scene
 
-		for i in [0...~~(Math.random()*5)]
-			retardedNPC = new RetardedNPC()
-			@stage.addChild(retardedNPC.sprite)
-			@npcs.push retardedNPC
-
-	GameManager::isWaveComplete = ->
-    if @npcs?
-      for npc in @npcs
-        return false if npc.health > 0
-				
+GameManager::goToScene = (id) ->
+  if @scenes[id]
+    if @currentScene
+      @currentScene.pause()
+    @currentScene = @scenes[id]
+    @currentScene.resume()
     return true
+  else
+    return false
 
-	GameManager::startGame = ->
-		@assets.showSpinner()
-		@assets.load()
-		@stage = new PIXI.Stage(0xFFFFFF)
-		
-		@gameover = PIXI.Sprite.fromImage("resources/img/gameover.png")
-		@background = PIXI.Sprite.fromImage("resources/img/sky1.png")
-		@background2 = PIXI.Sprite.fromImage("resources/img/sky2.png")
-		@background.position.x = 0
-		@background.position.y = 0
+GameManager::create = (width, height) ->
+  return @ if @renderer
 
-		@gameover.visible = false
-		@stage.addChild(@background)
-		@stage.addChild(@background2)
-		@player = new Player()
-		@stage.addChild(@player.sprite)
-		@stage.addChild(@gameover)
+  @renderer = PIXI.autoDetectRenderer(width, height)
+  @renderer.view.style.display = "block"
+  @renderer.view.style.width = width
+  @renderer.view.style.height = height
+  @defaultWidth = width
+  @defaultHeight = height
+  document.body.appendChild(@renderer.view)
 
-		@Hud = new HUDManager()
+  requestAnimationFrame(@loop)
+  return @
 
-		GameLoop.startRendering(@stage)
-		@assets.hideSpinner()
+GameManager::loop = =>
+  render = =>
+    requestAnimationFrame(render)
+    return if not GAME.currentScene or GAME.currentScene.isPaused()
+    GAME.currentScene.update()
+    GAME.renderer.render(GAME.currentScene)
 
-	GameManager::gameOver = () ->
-		GAME.player.setCollidable(false)
-		@gameover.visible = true
-
-	GameManager::moveBackground = (position) ->
-		@background.y = position * 0.1
-		@background.y %= GAME.background.height * 2
-		@background.y -= GAME.background.height*2 if (GAME.background.y>$(window).height())
-
-		@background2.y = position * 0.1 - GAME.background2.height
-		@background2.y %= GAME.background2.height * 2
-		@background2.y -= GAME.background2.height*2 if (GAME.background2.y>$(window).height())
-	return GameManager
+  render()
+module.exports = GameManager

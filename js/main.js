@@ -1,77 +1,35 @@
 (function() {
   "use strict";
-  require.config({
-    baseUrl: "js",
-    paths: {
-      "jquery": "vendor/jquery/dist/jquery.min",
-      "jquery-ui": "vendor/jquery-ui/jquery-ui.min",
-      "PIXI": "vendor/pixi/bin/pixi",
-      "handlebars": "vendor/handlebars/handlebars.min",
-      "async": "vendor/async/lib/async"
-    },
-    shim: {
-      "jquery": {
-        exports: "$"
-      },
-      "jquery-ui": {
-        deps: ["jquery"],
-        exports: "$"
-      },
-      "PIXI": {
-        exports: "PIXI"
-      },
-      "handlebars": {
-        exports: "Handlebars"
-      },
-      "async": {
-        exports: "async"
-      }
-    }
-  });
+  var $, GameManager, PIXI, gameManager, level1, mainMenu, splashScreen;
 
-  require(["GameLoop", "GameManager", "handlebars", "async"], function(GameLoop, GameManager, Handlebars, async) {
-    var onKeyDown, onKeyUp;
-    window.Handlebars = Handlebars;
-    window.async = async;
-    GameLoop.on("READY", (function(_this) {
-      return function() {
-        var GAME;
-        GAME = new GameManager();
-        window.GAME = GAME;
-        return GAME.start();
-      };
-    })(this));
-    GameLoop.start();
-    onKeyDown = function(evt) {
-      switch (evt.keyCode) {
-        case 39:
-          return GAME.rightButton = true;
-        case 37:
-          return GAME.leftButton = true;
-        case 38:
-          return GAME.upButton = true;
-        case 40:
-          return GAME.downButton = true;
-        case 32:
-          return GAME.shootButton = true;
-      }
-    };
-    onKeyUp = function(evt) {
-      switch (evt.keyCode) {
-        case 39:
-          return GAME.rightButton = false;
-        case 37:
-          return GAME.leftButton = false;
-        case 38:
-          return GAME.upButton = false;
-        case 40:
-          return GAME.downButton = false;
-        case 32:
-          return GAME.shootButton = false;
-      }
-    };
-    $(document).keydown(onKeyDown);
-    return $(document).keyup(onKeyUp);
-  });
+  PIXI = require("./vendor/pixi/bin/pixi.dev.js");
+
+  $ = require("./vendor/jquery/dist/jquery.js");
+
+  GameManager = require("./GameManager.js");
+
+  splashScreen = require("./scenes/SplashScreen.js");
+
+  mainMenu = require("./scenes/MainMenu.js");
+
+  level1 = require("./scenes/Level1.js");
+
+  window.PIXI = PIXI;
+
+  window.$ = $;
+
+  gameManager = new GameManager();
+
+  gameManager.create($(window).width(), $(window).height());
+
+  window.GAME = gameManager;
+
+  splashScreen = gameManager.createScene("splashScreen", splashScreen);
+
+  mainMenu = gameManager.createScene("mainMenu", mainMenu);
+
+  level1 = gameManager.createScene("level1", level1);
+
+  gameManager.goToScene("splashScreen");
 
 }).call(this);

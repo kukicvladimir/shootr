@@ -1,17 +1,17 @@
 (function() {
   "use strict";
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    __slice = [].slice;
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty,
+    slice = [].slice;
 
   define(["GameObject", "Vector2"], function(GameObject, Vector2) {
     var Metheor;
-    Metheor = (function(_super) {
-      __extends(Metheor, _super);
+    Metheor = (function(superClass) {
+      extend(Metheor, superClass);
 
       function Metheor() {
         var dirx, dx, isCollidable, opts, position, velocity;
-        opts = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+        opts = 1 <= arguments.length ? slice.call(arguments, 0) : [];
         position = new Vector2(0, 0);
         isCollidable = Math.random() > 0.5 ? true : false;
         dirx = [-2, -1, 0, 1, 2];

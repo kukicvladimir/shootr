@@ -1,17 +1,17 @@
 (function() {
   "use strict";
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    __slice = [].slice;
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty,
+    slice = [].slice;
 
   define(["GameObject", "Bullet", "Vector2"], function(GameObject, Bullet, Vector2) {
     var NPC;
-    NPC = (function(_super) {
-      __extends(NPC, _super);
+    NPC = (function(superClass) {
+      extend(NPC, superClass);
 
       function NPC() {
         var opts, position, velocity;
-        opts = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+        opts = 1 <= arguments.length ? slice.call(arguments, 0) : [];
         position = new Vector2(0, 0);
         velocity = new Vector2(2, 2);
         opts = {
@@ -90,36 +90,36 @@
       }
     };
     NPC.prototype.removeBullet = function(id) {
-      var bullet, ind, _i, _len, _ref, _results;
-      _ref = this.bullets;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        bullet = _ref[_i];
+      var bullet, i, ind, len, ref, results;
+      ref = this.bullets;
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        bullet = ref[i];
         if ((bullet != null ? bullet.uid : void 0) === id) {
           ind = this.bullets.indexOf(bullet);
           GAME.stage.removeChild(bullet.sprite);
-          _results.push(this.bullets.splice(ind, 1));
+          results.push(this.bullets.splice(ind, 1));
         } else {
-          _results.push(void 0);
+          results.push(void 0);
         }
       }
-      return _results;
+      return results;
     };
     NPC.prototype.removeBullets = function() {
-      var bullet, ind, _i, _len, _ref, _results;
-      _ref = this.bullets;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        bullet = _ref[_i];
+      var bullet, i, ind, len, ref, results;
+      ref = this.bullets;
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        bullet = ref[i];
         if ((bullet != null ? bullet.position.y : void 0) > GameLoop.renderer.height) {
           ind = this.bullets.indexOf(bullet);
           GAME.stage.removeChild(bullet.sprite);
-          _results.push(this.bullets.splice(ind, 1));
+          results.push(this.bullets.splice(ind, 1));
         } else {
-          _results.push(void 0);
+          results.push(void 0);
         }
       }
-      return _results;
+      return results;
     };
     return NPC;
   });
