@@ -23,6 +23,7 @@ class Level1 extends Scene
         when 38 then GAME.upButton = true
         when 40 then GAME.downButton = true
         when 32 then GAME.shootButton = true
+        when 80 then GAME.paused = true #letter p
 
     onKeyUp = (evt) ->
       switch evt.keyCode
@@ -31,6 +32,7 @@ class Level1 extends Scene
         when 38 then GAME.upButton = false
         when 40 then GAME.downButton = false
         when 32 then GAME.shootButton = false
+        when 80 then GAME.paused = true #letter p
 
     $(document).keydown(onKeyDown)
     $(document).keyup(onKeyUp)
@@ -50,7 +52,7 @@ Level1::update = (()->
   @player.moveUp() if GAME.upButton
   @player.moveDown() if GAME.downButton
   @player.shoot() if GAME.shootButton
-
+  GAME.goToScene("pause") if GAME.paused
 
   #move bullets
   for bullet in @player.bullets

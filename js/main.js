@@ -1,6 +1,6 @@
 (function() {
   "use strict";
-  var $, GameManager, PIXI, gameManager, level1, mainMenu, splashScreen;
+  var $, GameManager, PIXI, gameManager, level1, mainMenu, pause, splashScreen;
 
   PIXI = require("./vendor/pixi/bin/pixi.dev.js");
 
@@ -13,6 +13,8 @@
   mainMenu = require("./scenes/MainMenu.js");
 
   level1 = require("./scenes/Level1.js");
+
+  pause = require("./scenes/Pause.js");
 
   window.PIXI = PIXI;
 
@@ -29,6 +31,8 @@
   mainMenu = gameManager.createScene("mainMenu", mainMenu);
 
   level1 = gameManager.createScene("level1", level1);
+
+  pause = gameManager.createScene("pause", pause);
 
   gameManager.goToScene("splashScreen");
 

@@ -33,6 +33,8 @@
             return GAME.downButton = true;
           case 32:
             return GAME.shootButton = true;
+          case 80:
+            return GAME.paused = true;
         }
       };
       onKeyUp = function(evt) {
@@ -47,6 +49,8 @@
             return GAME.downButton = false;
           case 32:
             return GAME.shootButton = false;
+          case 80:
+            return GAME.paused = true;
         }
       };
       $(document).keydown(onKeyDown);
@@ -83,6 +87,9 @@
     }
     if (GAME.shootButton) {
       this.player.shoot();
+    }
+    if (GAME.paused) {
+      GAME.goToScene("pause");
     }
     ref = this.player.bullets;
     results = [];
