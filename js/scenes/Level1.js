@@ -15,8 +15,10 @@
       this.background = PIXI.Sprite.fromImage("resources/img/sky1.png");
       this.background.tint = 0x0000FF;
       this.background2 = PIXI.Sprite.fromImage("resources/img/sky2.png");
+      this.background2.tint = 0x0000FF;
       this.background.position.x = 0;
       this.background.position.y = 0;
+      this.position = 0;
       this.addChild(this.background);
       this.addChild(this.background2);
       this.player = new Player();
@@ -29,6 +31,7 @@
 
   Level1.prototype.update = (function() {
     var bullet, i, len, ref, results;
+    this.position += GAME.speed * 10;
     if (GAME.inputManager.keyDown(GAME.inputManager.Keys.LEFT)) {
       this.player.moveLeft();
     }
@@ -47,15 +50,15 @@
     if (GAME.inputManager.keyDown(GAME.inputManager.Keys.P)) {
       GAME.goToScene("pause");
     }
-    this.background.y += 0.1;
+    this.background.y = this.position * 0.1;
     this.background.y %= this.background.height * 2;
     if (this.background.y > $(window).height()) {
-      this.background.y += this.background.height * 2;
+      this.background.y -= this.background.height * 2;
     }
-    this.background2.y += 0.1 - this.background2.height;
+    this.background2.y = this.position * 0.1 - this.background2.height;
     this.background2.y %= this.background2.height * 2;
     if (this.background2.y > $(window).height()) {
-      this.background2.y += this.background2.height * 2;
+      this.background2.y -= this.background2.height * 2;
     }
     ref = this.player.bullets;
     results = [];
