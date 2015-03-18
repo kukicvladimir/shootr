@@ -8,6 +8,7 @@
 
   GameManager = (function() {
     function GameManager() {
+      this.speed = 1;
       this.renderer = PIXI.IRenderer;
       this.currentScene = null;
       this.scenes = {};

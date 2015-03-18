@@ -145,8 +145,8 @@
     if (!this.isMovable) {
       return;
     }
-    this.position.x += x * this.speed;
-    return this.position.y += y * this.speed;
+    this.position.x += x * this.speed * GAME.speed;
+    return this.position.y += y * this.speed * GAME.speed;
   };
 
 
@@ -159,7 +159,7 @@
       return;
     }
     this.velocity.x = -1;
-    this.position.x += this.velocity.x * this.speed;
+    this.position.x += this.velocity.x * this.speed * GAME.speed;
     if (this.position.x < 0) {
       return this.position.x = 0;
     }
@@ -175,7 +175,7 @@
       return;
     }
     this.velocity.x = 1;
-    this.position.x += this.velocity.x * this.speed;
+    this.position.x += this.velocity.x * this.speed * GAME.speed;
     if (this.position.x > GAME.renderer.width - this.sprite.width) {
       return this.position.x = GAME.renderer.width - this.sprite.width;
     }
@@ -191,7 +191,7 @@
       return;
     }
     this.velocity.y = -1;
-    this.position.y += this.velocity.y * this.speed;
+    this.position.y += this.velocity.y * this.speed * GAME.speed;
     if (this.position.y < GAME.renderer.height / 2) {
       return this.position.y = GAME.renderer.height / 2;
     }
@@ -207,7 +207,7 @@
       return;
     }
     this.velocity.y = 1;
-    this.position.y += this.velocity.y * this.speed;
+    this.position.y += this.velocity.y * this.speed * GAME.speed;
     if (this.position.y > GAME.renderer.height - this.sprite.height) {
       return this.position.y = GAME.renderer.height - this.sprite.height;
     }

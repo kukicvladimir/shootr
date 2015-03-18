@@ -4,6 +4,7 @@ InputManager = require("./InputManager")
 
 class GameManager
   constructor: () ->
+    @speed = 1
     @renderer = PIXI.IRenderer
     @currentScene = null
     @scenes = {}

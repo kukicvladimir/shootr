@@ -97,8 +97,8 @@ move object in specified direction
 GameObject::moveTo = (x, y) ->
   return if @isDead()
   return if not @isMovable
-  @position.x += x * @speed
-  @position.y += y * @speed
+  @position.x += x * @speed * GAME.speed
+  @position.y += y * @speed * GAME.speed
 
 ###
 Move object to left
@@ -106,7 +106,7 @@ Move object to left
 GameObject::moveLeft = () ->
   return if not @isMovable
   @velocity.x = -1
-  @position.x += @velocity.x * @speed
+  @position.x += @velocity.x * @speed * GAME.speed
   @position.x = 0 if @position.x < 0
 
 ###
@@ -115,7 +115,7 @@ Move object to right
 GameObject::moveRight = () ->
   return if not @isMovable
   @velocity.x = 1
-  @position.x += @velocity.x * @speed
+  @position.x += @velocity.x * @speed * GAME.speed
   if @position.x > GAME.renderer.width - @sprite.width
     @position.x = GAME.renderer.width - @sprite.width
 
@@ -125,7 +125,7 @@ Move object up
 GameObject::moveUp = () ->
   return if not @isMovable
   @velocity.y = -1
-  @position.y += @velocity.y * @speed
+  @position.y += @velocity.y * @speed * GAME.speed
   if @position.y < GAME.renderer.height / 2
     @position.y = GAME.renderer.height / 2
 
@@ -135,7 +135,7 @@ Move object down
 GameObject::moveDown = () ->
   return if not @isMovable
   @velocity.y = 1
-  @position.y += @velocity.y * @speed
+  @position.y += @velocity.y * @speed * GAME.speed
   if @position.y > GAME.renderer.height - @sprite.height
     @position.y = GAME.renderer.height - @sprite.height
 
