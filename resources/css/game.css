@@ -1,6 +1,18 @@
+@font-face {
+    font-family: 'Pixelate';
+    src: url('../fonts/space age.ttf') format('truetype');
+}
+
 body {
 	margin: 0;
 	padding: 0
+}
+
+p {
+    font-size: 7em;
+    font-family: 'Pixelate';
+    text-align: center;
+    color: black;
 }
 
 #top-menu {

@@ -3,7 +3,7 @@ Scene = require("../Scene")
 class MainMenu extends Scene
   constructor: () ->
     super()
-    @title = new PIXI.Text("ShootR", {font: "150px Arial", fill: "#5ACAFA", align: "center", stroke: "#FFFFFF", strokeThickness: 6})
+    @title = new PIXI.Text("ShootR", {font: "150px Pixelate", fill: "#5ACAFA", align: "center", stroke: "#FFFFFF", strokeThickness: 6})
     @title.position.x = $(window).width()/2 - @title.width/2
     @title.position.y = $(window).height()/2 - @title.height/2
 

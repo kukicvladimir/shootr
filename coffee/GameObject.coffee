@@ -3,7 +3,6 @@ Vector2 = require("./Vector2")
 UID = 0
 class GameObject
   constructor: (opts...)->
-#    super
     @uid = UID++
     @position = opts[0].position
     @speed = GAME.speed + opts[0].speed
