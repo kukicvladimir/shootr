@@ -16,9 +16,9 @@ class Player extends GameObject
       damage: 1
       shield: 0
       isCollidable: true
-      isMovable: false
+      isMovable: true
       isShieldActive: false
-      sprite:"resources/img/spaceship.png"
+      sprite:"resources/img/spaceship.gif"
       shotDelay: 150
     super(opts)
     @init()
@@ -28,10 +28,6 @@ Player::init = () ->
   @bullets = []
   @position.x = GAME.renderer.width/2 - @sprite.width/2
   @position.y = GAME.renderer.height - 100
-  setTimeout(() =>
-    @isMovable = true
-  , 3000)
-
 
 Player::shoot = () ->
   return if @isDead()

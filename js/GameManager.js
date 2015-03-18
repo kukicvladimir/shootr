@@ -1,8 +1,10 @@
 (function() {
   "use strict";
-  var GameManager, Scene;
+  var GameManager, InputManager, Scene;
 
   Scene = require("./Scene");
+
+  InputManager = require("./InputManager");
 
   GameManager = (function() {
     function GameManager() {
@@ -15,6 +17,7 @@
       this.upButton = false;
       this.downButton = false;
       this.shootButton = false;
+      this.inputManager = new InputManager();
       return this;
     }
 
@@ -61,6 +64,11 @@
     this.defaultWidth = width;
     this.defaultHeight = height;
     document.body.appendChild(this.renderer.view);
+    window.addEventListener('resize', function() {
+      GAME.renderer.resize(window.innerWidth, window.innerHeight);
+      GAME.renderer.view.style.width = window.innerWidth + 'px';
+      return GAME.renderer.view.style.height = window.innerHeight + 'px';
+    }, true);
     requestAnimationFrame(this.loop);
     return this;
   };

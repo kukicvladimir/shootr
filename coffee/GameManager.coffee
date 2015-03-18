@@ -1,5 +1,7 @@
 "use strict"
 Scene = require("./Scene")
+InputManager = require("./InputManager")
+
 class GameManager
   constructor: () ->
     @renderer = PIXI.IRenderer
@@ -12,6 +14,7 @@ class GameManager
     @upButton = false
     @downButton = false
     @shootButton = false
+    @inputManager = new InputManager();
 
     return @
 ###
@@ -45,6 +48,12 @@ GameManager::create = (width, height) ->
   @defaultWidth = width
   @defaultHeight = height
   document.body.appendChild(@renderer.view)
+
+  window.addEventListener('resize', () ->
+    GAME.renderer.resize(window.innerWidth, window.innerHeight)
+    GAME.renderer.view.style.width = window.innerWidth+'px'
+    GAME.renderer.view.style.height = window.innerHeight+'px'
+  , true)
 
   requestAnimationFrame(@loop)
   return @

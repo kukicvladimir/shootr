@@ -26,9 +26,9 @@
         damage: 1,
         shield: 0,
         isCollidable: true,
-        isMovable: false,
+        isMovable: true,
         isShieldActive: false,
-        sprite: "resources/img/spaceship.png",
+        sprite: "resources/img/spaceship.gif",
         shotDelay: 150
       };
       Player.__super__.constructor.call(this, opts);
@@ -43,12 +43,7 @@
   Player.prototype.init = function() {
     this.bullets = [];
     this.position.x = GAME.renderer.width / 2 - this.sprite.width / 2;
-    this.position.y = GAME.renderer.height - 100;
-    return setTimeout((function(_this) {
-      return function() {
-        return _this.isMovable = true;
-      };
-    })(this), 3000);
+    return this.position.y = GAME.renderer.height - 100;
   };
 
   Player.prototype.shoot = function() {

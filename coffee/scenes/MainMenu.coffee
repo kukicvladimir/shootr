@@ -7,7 +7,7 @@ class MainMenu extends Scene
     @title.position.x = $(window).width()/2 - @title.width/2
     @title.position.y = $(window).height()/2 - @title.height/2
 
-    @anyKey = new PIXI.Text("PRESS ANY KEY TO START", {font: "18px Snippet", fill: "white", align: "left"})
+    @anyKey = new PIXI.Text("PRESS 'S' TO START", {font: "18px Snippet", fill: "white", align: "left"})
     @anyKey.position.x = $(window).width()/2 - @anyKey.width/2
     @anyKey.position.y = $(window).height()/2 + @title.height/2
 
@@ -22,15 +22,6 @@ class MainMenu extends Scene
     @addChild(@title)
     @addChild(@anyKey)
 
-    #controlls
-    onKeyDown = (evt) ->
-      GAME.goToScene("level1") if (evt.keyCode != undefined)
-
-    onKeyUp = (evt) ->
-
-    $(document).keydown(onKeyDown)
-    $(document).keyup(onKeyUp)
-
 MainMenu::update = () ->
   @background.y -= 0.1
   @background.y %= @background.height * 2
@@ -39,5 +30,5 @@ MainMenu::update = () ->
   @background2.y -= 0.1 - @background2.height
   @background2.y %= @background2.height * 2
   @background2.y -= @background2.height*2 if (@background2.y>$(window).height())
-
+  GAME.goToScene("level1") if (GAME.inputManager.keyDown(GAME.inputManager.Keys.S))
 module.exports = MainMenu

@@ -7,7 +7,7 @@ class PauseMenu extends Scene
     @title.position.x = $(window).width()/2 - @title.width/2
     @title.position.y = $(window).height()/2 - @title.height/2
 
-    @anyKey = new PIXI.Text("PRESS ANY KEY TO CONTINUE", {font: "18px Snippet", fill: "white", align: "left"})
+    @anyKey = new PIXI.Text("PRESS 'R' TO RESUME", {font: "18px Snippet", fill: "white", align: "left"})
     @anyKey.position.x = $(window).width()/2 - @anyKey.width/2
     @anyKey.position.y = $(window).height()/2 + @title.height/2
 
@@ -22,18 +22,8 @@ class PauseMenu extends Scene
     @addChild(@title)
     @addChild(@anyKey)
 
-    #controlls
-    onKeyDown = (evt) ->
-      if (evt.keyCode != undefined)
-        GAME.paused = false
-        GAME.goToScene("level1")
-
-    onKeyUp = (evt) ->
-
-    $(document).keydown(onKeyDown)
-    $(document).keyup(onKeyUp)
-
 PauseMenu::update = () ->
+  GAME.goToScene("level1") if (GAME.inputManager.keyDown(GAME.inputManager.Keys.R))
   @background.y -= 0.1
   @background.y %= @background.height * 2
   @background.y -= @background.height*2 if (@background.y>$(window).height())

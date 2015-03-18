@@ -6,6 +6,7 @@ class Level1 extends Scene
     super()
 
     @background = PIXI.Sprite.fromImage("resources/img/sky1.png")
+    @background.tint=0x0000FF
     @background2 = PIXI.Sprite.fromImage("resources/img/sky2.png")
     @background.position.x = 0
     @background.position.y = 0
@@ -16,29 +17,15 @@ class Level1 extends Scene
     @player = new Player()
     @addChild(@player.sprite)
 
-    onKeyDown = (evt) ->
-      switch evt.keyCode
-        when 39 then GAME.rightButton = true
-        when 37 then GAME.leftButton = true
-        when 38 then GAME.upButton = true
-        when 40 then GAME.downButton = true
-        when 32 then GAME.shootButton = true
-        when 80 then GAME.paused = true #letter p
-
-    onKeyUp = (evt) ->
-      switch evt.keyCode
-        when 39 then GAME.rightButton = false
-        when 37 then GAME.leftButton = false
-        when 38 then GAME.upButton = false
-        when 40 then GAME.downButton = false
-        when 32 then GAME.shootButton = false
-        when 80 then GAME.paused = true #letter p
-
-    $(document).keydown(onKeyDown)
-    $(document).keyup(onKeyUp)
-
 Level1::update = (()->
+  @player.moveLeft() if (GAME.inputManager.keyDown(GAME.inputManager.Keys.LEFT))
+  @player.moveRight() if (GAME.inputManager.keyDown(GAME.inputManager.Keys.RIGHT))
+  @player.moveUp() if (GAME.inputManager.keyDown(GAME.inputManager.Keys.UP))
+  @player.moveDown() if (GAME.inputManager.keyDown(GAME.inputManager.Keys.DOWN))
+  @player.shoot() if (GAME.inputManager.keyDown(GAME.inputManager.Keys.SPACE))
+  GAME.goToScene("pause") if (GAME.inputManager.keyDown(GAME.inputManager.Keys.P))
   #paralax background
+
   @background.y += 0.1
   @background.y %= @background.height * 2
   @background.y += @background.height*2 if (@background.y>$(window).height())
@@ -46,13 +33,6 @@ Level1::update = (()->
   @background2.y += 0.1 - @background2.height
   @background2.y %= @background2.height * 2
   @background2.y += @background2.height*2 if (@background2.y>$(window).height())
-
-  @player.moveRight() if GAME.rightButton
-  @player.moveLeft() if GAME.leftButton
-  @player.moveUp() if GAME.upButton
-  @player.moveDown() if GAME.downButton
-  @player.shoot() if GAME.shootButton
-  GAME.goToScene("pause") if GAME.paused
 
   #move bullets
   for bullet in @player.bullets

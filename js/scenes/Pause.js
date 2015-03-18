@@ -9,7 +9,6 @@
     extend(PauseMenu, superClass);
 
     function PauseMenu() {
-      var onKeyDown, onKeyUp;
       PauseMenu.__super__.constructor.call(this);
       this.title = new PIXI.Text("GAME PAUSED", {
         font: "150px Arial",
@@ -20,7 +19,7 @@
       });
       this.title.position.x = $(window).width() / 2 - this.title.width / 2;
       this.title.position.y = $(window).height() / 2 - this.title.height / 2;
-      this.anyKey = new PIXI.Text("PRESS ANY KEY TO CONTINUE", {
+      this.anyKey = new PIXI.Text("PRESS 'R' TO RESUME", {
         font: "18px Snippet",
         fill: "white",
         align: "left"
@@ -35,15 +34,6 @@
       this.addChild(this.background2);
       this.addChild(this.title);
       this.addChild(this.anyKey);
-      onKeyDown = function(evt) {
-        if (evt.keyCode !== void 0) {
-          GAME.paused = false;
-          return GAME.goToScene("level1");
-        }
-      };
-      onKeyUp = function(evt) {};
-      $(document).keydown(onKeyDown);
-      $(document).keyup(onKeyUp);
     }
 
     return PauseMenu;
@@ -51,6 +41,9 @@
   })(Scene);
 
   PauseMenu.prototype.update = function() {
+    if (GAME.inputManager.keyDown(GAME.inputManager.Keys.R)) {
+      GAME.goToScene("level1");
+    }
     this.background.y -= 0.1;
     this.background.y %= this.background.height * 2;
     if (this.background.y > $(window).height()) {
