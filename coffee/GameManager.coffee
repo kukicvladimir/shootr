@@ -9,6 +9,7 @@ class GameManager
     @currentScene = null
     @scenes = {}
 
+    @objects = []
     @speed = 1
     @rightButton = false
     @leftButton = false
@@ -62,6 +63,8 @@ GameManager::create = (width, height) ->
 GameManager::loop = =>
   render = =>
     requestAnimationFrame(render)
+    for object in GAME.objects
+      object.update()
     return if not GAME.currentScene or GAME.currentScene.isPaused()
     GAME.currentScene.update()
     GAME.renderer.render(GAME.currentScene)

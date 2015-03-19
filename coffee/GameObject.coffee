@@ -16,6 +16,7 @@ class GameObject
     @isShieldActive = opts[0].isShieldActive
     @isMovable = opts[0].isMovable || false
     @isCollidable = opts[0].isCollidable || false
+    @collidesWith = opts[0].collidesWith || []
 
     @sprite = PIXI.Sprite.fromImage(opts[0].sprite)
     @sprite.position = @position
@@ -162,11 +163,12 @@ GameObject::respawn = () ->
     @setCollidable(true)
   , 2000)
 
+GameObject::resolveCollisions = ->
 
 
 GameObject::update = ->
-  @move()
-  @resolveCollisions()
+  @move() if @isMovable
+  @resolveCollisions() if @isCollidable
 
 module.exports = GameObject
 

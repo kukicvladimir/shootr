@@ -22,6 +22,7 @@
       this.isShieldActive = opts[0].isShieldActive;
       this.isMovable = opts[0].isMovable || false;
       this.isCollidable = opts[0].isCollidable || false;
+      this.collidesWith = opts[0].collidesWith || [];
       this.sprite = PIXI.Sprite.fromImage(opts[0].sprite);
       this.sprite.position = this.position;
       this.lastShotDate = null;
@@ -241,9 +242,15 @@
     return setTimeout(this.respawnBlink(), this.setCollidable(true), 2000);
   };
 
+  GameObject.prototype.resolveCollisions = function() {};
+
   GameObject.prototype.update = function() {
-    this.move();
-    return this.resolveCollisions();
+    if (this.isMovable) {
+      this.move();
+    }
+    if (this.isCollidable) {
+      return this.resolveCollisions();
+    }
   };
 
   module.exports = GameObject;

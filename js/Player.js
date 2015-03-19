@@ -24,7 +24,6 @@
         lifes: 3,
         speed: 8,
         damage: 1,
-        shield: 0,
         isCollidable: true,
         isMovable: true,
         isShieldActive: false,
@@ -41,7 +40,6 @@
   })(GameObject);
 
   Player.prototype.init = function() {
-    this.bullets = [];
     this.position.x = GAME.renderer.width / 2 - this.sprite.width / 2;
     return this.position.y = GAME.renderer.height - 100;
   };
@@ -51,7 +49,6 @@
     if (this.isDead()) {
       return;
     }
-    this.removeBullets();
     if (this.lastShotDate < Date.now() - this.shotDelay) {
       velocity = new Vector2(0, -1);
       position = new Vector2(this.position.x + this.sprite.width / 2, this.position.y);
@@ -61,49 +58,38 @@
         velocity: velocity,
         isCollidable: true,
         isMovable: true,
-        speed: 11,
-        sprite: "resources/img/bullet.png"
+        speed: 10,
+        sprite: "resources/img/bullet.png",
+        collidesWith: ['NPC']
       };
       bullet = new Bullet(opts);
-      this.bullets.push(bullet);
+      GAME.objects.push(bullet);
       GAME.currentScene.addChild(bullet.sprite);
       return this.lastShotDate = Date.now();
     }
   };
 
-  Player.prototype.removeBullet = function(id) {
-    var bullet, i, ind, len, ref, results;
-    ref = this.bullets;
-    results = [];
-    for (i = 0, len = ref.length; i < len; i++) {
-      bullet = ref[i];
-      if ((bullet != null ? bullet.uid : void 0) === id) {
-        ind = this.bullets.indexOf(bullet);
-        GAME.currentScene.removeChild(bullet.sprite);
-        results.push(this.bullets.splice(ind, 1));
-      } else {
-        results.push(void 0);
+  Player.prototype.move = function() {
+    if (GAME.currentScene.constructor.name === 'Level1') {
+      if (GAME.inputManager.keyDown(GAME.inputManager.Keys.LEFT)) {
+        this.moveLeft();
+      }
+      if (GAME.inputManager.keyDown(GAME.inputManager.Keys.RIGHT)) {
+        this.moveRight();
+      }
+      if (GAME.inputManager.keyDown(GAME.inputManager.Keys.UP)) {
+        this.moveUp();
+      }
+      if (GAME.inputManager.keyDown(GAME.inputManager.Keys.DOWN)) {
+        this.moveDown();
+      }
+      if (GAME.inputManager.keyDown(GAME.inputManager.Keys.SPACE)) {
+        return this.shoot();
       }
     }
-    return results;
   };
 
-  Player.prototype.removeBullets = function() {
-    var bullet, i, ind, len, ref, results;
-    ref = this.bullets;
-    results = [];
-    for (i = 0, len = ref.length; i < len; i++) {
-      bullet = ref[i];
-      if ((bullet != null ? bullet.sprite.position.y : void 0) < 0) {
-        ind = this.bullets.indexOf(bullet);
-        GAME.currentScene.removeChild(bullet.sprite);
-        results.push(this.bullets.splice(ind, 1));
-      } else {
-        results.push(void 0);
-      }
-    }
-    return results;
-  };
+  Player.prototype.onCollision = function() {};
 
   module.exports = Player;
 

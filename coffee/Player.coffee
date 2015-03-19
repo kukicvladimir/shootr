@@ -4,7 +4,7 @@ Vector2 = require("./Vector2")
 Bullet = require("./Bullet")
 
 class Player extends GameObject
-  constructor: ()->
+  constructor: () ->
     position = new Vector2(0, 0)
     velocity = new Vector2(0, 0)
     opts =
@@ -14,7 +14,6 @@ class Player extends GameObject
       lifes: 3
       speed: 8
       damage: 1
-      shield: 0
       isCollidable: true
       isMovable: true
       isShieldActive: false
@@ -25,13 +24,11 @@ class Player extends GameObject
     return @
 
 Player::init = () ->
-  @bullets = []
   @position.x = GAME.renderer.width/2 - @sprite.width/2
   @position.y = GAME.renderer.height - 100
 
-Player::shoot = () ->
+Player::shoot = ->
   return if @isDead()
-  @removeBullets()
   if @lastShotDate < Date.now() - @shotDelay
     velocity = new Vector2(0, -1)
     position = new Vector2(@position.x + @sprite.width/2, @position.y)
@@ -41,26 +38,24 @@ Player::shoot = () ->
       velocity: velocity
       isCollidable: true
       isMovable: true
-      speed: 11
+      speed: 10
       sprite: "resources/img/bullet.png"
+      collidesWith: ['NPC']
     bullet = new Bullet(opts)
-    @bullets.push bullet
+#    @bullets.push bullet
+    GAME.objects.push(bullet)
     GAME.currentScene.addChild(bullet.sprite)
     @lastShotDate = Date.now()
 
-Player::removeBullet = (id) ->
-  for bullet in @bullets
-    if bullet?.uid is id
-      ind = @bullets.indexOf(bullet)
-      GAME.currentScene.removeChild(bullet.sprite)
-      @bullets.splice(ind, 1)
+Player::move = ->
+  if (GAME.currentScene.constructor.name=='Level1')
+    @moveLeft() if (GAME.inputManager.keyDown(GAME.inputManager.Keys.LEFT))
+    @moveRight() if (GAME.inputManager.keyDown(GAME.inputManager.Keys.RIGHT))
+    @moveUp() if (GAME.inputManager.keyDown(GAME.inputManager.Keys.UP))
+    @moveDown() if (GAME.inputManager.keyDown(GAME.inputManager.Keys.DOWN))
+    @shoot() if (GAME.inputManager.keyDown(GAME.inputManager.Keys.SPACE))
 
-Player::removeBullets = () ->
-  for bullet in @bullets
-    if bullet?.sprite.position.y < 0
-      ind = @bullets.indexOf(bullet)
-      GAME.currentScene.removeChild(bullet.sprite)
-      @bullets.splice(ind, 1)
+Player::onCollision = ->
 
 module.exports = Player
 

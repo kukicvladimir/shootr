@@ -31,6 +31,8 @@
     return this.position.y += this.velocity.y * this.speed;
   };
 
+  Bullet.prototype.onCollision = function() {};
+
   module.exports = Bullet;
 
 }).call(this);

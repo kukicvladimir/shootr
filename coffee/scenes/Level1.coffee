@@ -1,5 +1,7 @@
 Scene = require("../Scene")
 Player = require("../Player")
+NPC = require("../NPC")
+Vector2 = require("../Vector2")
 
 class Level1 extends Scene
   constructor: () ->
@@ -11,56 +13,44 @@ class Level1 extends Scene
     @background2.tint=0x0000FF
     @background.position.x = 0
     @background.position.y = 0
-    @position = 0
+    @count = 0
 
     @addChild(@background)
     @addChild(@background2)
 
     @player = new Player()
     @addChild(@player.sprite)
+    GAME.objects.push(@player)
 
-Level1::update = (()->
-  @position+=GAME.speed*10
-  @player.moveLeft() if (GAME.inputManager.keyDown(GAME.inputManager.Keys.LEFT))
-  @player.moveRight() if (GAME.inputManager.keyDown(GAME.inputManager.Keys.RIGHT))
-  @player.moveUp() if (GAME.inputManager.keyDown(GAME.inputManager.Keys.UP))
-  @player.moveDown() if (GAME.inputManager.keyDown(GAME.inputManager.Keys.DOWN))
-  @player.shoot() if (GAME.inputManager.keyDown(GAME.inputManager.Keys.SPACE))
-  GAME.goToScene("pause") if (GAME.inputManager.keyDown(GAME.inputManager.Keys.P))
 
-  @background.y = @position * 0.1;
+Level1::update = ()->
+  @count+=GAME.speed*10
+  @background.y = @count * 0.1;
   @background.y %= @background.height * 2;
 
   if (@background.y > $(window).height())
     @background.y -= @background.height * 2
 
-  @background2.y = @position * 0.1 - @background2.height;
+  @background2.y = @count * 0.1 - @background2.height;
   @background2.y %= @background2.height * 2
   if (@background2.y > $(window).height())
     @background2.y -= @background2.height * 2
 
-  #move bullets
-  for bullet in @player.bullets
-#    if GAME.npcs
-#      for npc in GAME.npcs
-#        continue if npc.isDead()
-#        if bullet and Geometry.rectangleIntersectsRectangle(bullet.sprite.getBounds(), npc.sprite.getBounds())
-#          npc.decreaseHealth(bullet.damage)
-#          GAME.Hud.updateScore(50)
-#          GAME.player.removeBullet(bullet.uid)
-#
-#    for metheor in GAME.metheors
-#      continue if metheor.isDead()
-#      continue if not metheor.isCollidable
-#      #check if player is hit by metheor
-#      if Geometry.rectangleIntersectsRectangle(metheor.sprite.getBounds(), GAME.player.sprite.getBounds())
-#        GAME.player.decreaseHealth(metheor.damage)
+#  if (@count>1000 and @count < 4000)
+  if (@count%5000 == 0)
+    for i in [0..5]
+      position = new Vector2(-i*100, 300)
+#      position.y = Math.random()*GAME.renderer.height/2#
+      opts =
+        position: position
+        velocity: new Vector2(1, 0)
+      npc = new NPC(opts)
+      @addChild(npc.sprite)
+      GAME.objects.push(npc)
 
-#      if bullet and Geometry.rectangleIntersectsRectangle(bullet.sprite.getBounds(), metheor.sprite.getBounds())
-#        metheor.decreaseHealth(bullet.damage)
-#        GAME.Hud.updateScore(50)
-#        GAME.player.removeBullet(bullet.uid)
-    bullet?.move()
-)
+  GAME.goToScene("pause") if (GAME.inputManager.keyDown(GAME.inputManager.Keys.P))
+
+
+
 
 module.exports = Level1

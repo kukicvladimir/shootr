@@ -14,4 +14,6 @@ Bullet::move = () ->
   @position.x += @velocity.x * @speed
   @position.y += @velocity.y * @speed
 
+Bullet::onCollision = ->
+
 module.exports = Bullet
