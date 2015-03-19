@@ -1,10 +1,6 @@
 (function() {
   "use strict";
-  var $, $$, HUDManager;
-
-  $ = require("jquery");
-
-  $$ = require("jquery-ui");
+  var HUDManager;
 
   HUDManager = (function() {
     function HUDManager() {

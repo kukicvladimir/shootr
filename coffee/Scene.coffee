@@ -1,6 +1,5 @@
 "use strict"
-
-PIXI = require("./vendor/pixi/bin/pixi.dev.js");
+PIXI = require("../js/vendor/pixi/bin/pixi.dev.js");
 class Scene extends PIXI.Stage
   constructor: (background) ->
     super(background)

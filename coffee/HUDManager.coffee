@@ -1,7 +1,5 @@
 "use strict"
-
-$ = require("jquery")
-$$ = require("jquery-ui")
+#
 class HUDManager
   constructor: () ->
     @score = 0

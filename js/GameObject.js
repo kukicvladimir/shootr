@@ -241,6 +241,11 @@
     return setTimeout(this.respawnBlink(), this.setCollidable(true), 2000);
   };
 
+  GameObject.prototype.update = function() {
+    this.move();
+    return this.resolveCollisions();
+  };
+
   module.exports = GameObject;
 
 }).call(this);

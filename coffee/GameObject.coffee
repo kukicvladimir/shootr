@@ -162,5 +162,11 @@ GameObject::respawn = () ->
     @setCollidable(true)
   , 2000)
 
+
+
+GameObject::update = ->
+  @move()
+  @resolveCollisions()
+
 module.exports = GameObject
 

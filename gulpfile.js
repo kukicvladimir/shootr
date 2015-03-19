@@ -1,9 +1,9 @@
 var gulp = require('gulp'),
   jshint = require('gulp-jshint'),
   livereload = require('gulp-livereload'),
-  coffee = require("gulp-coffee")
-
-
+  coffee = require("gulp-coffee"),
+  gutil = require("gulp-util")
+  shell = require("gulp-shell");
 
 
 gulp.task('build-coffee', ['clean'], function () {
@@ -19,14 +19,19 @@ gulp.task('build-coffee', ['clean'], function () {
 // Scripts
 gulp.task('compile-coffee', function () {
   gulp.src('./coffee/**/*.coffee')
-    .pipe(coffee())
-    .pipe(gulp.dest('./js'));
+    .pipe(coffee().on("error", gutil.log))
+    .pipe(gulp.dest('./js'))
 });
+
+gulp.task('browserify', function () {
+  gulp.src('./js/main.js')
+    .pipe(shell(['browserify js/main.js -o js/all.min.js -d']));
+})
 
 // Watch
 gulp.task('watch', function() {
   // Watch .coffee files
-  gulp.watch('coffee/**/*.coffee', ['compile-coffee']);
+  gulp.watch('coffee/**/*.coffee', ['compile-coffee', 'browserify']);
 
   // Create LiveReload server
   livereload.listen();
