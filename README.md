@@ -11,6 +11,3 @@ To run the game execute `node server.js` and open game in your favourite browser
 
 
 [LIVE DEMO] (http://kukic.awardspace.info/shootr/)
-
-
-`browserify js/main.js -o js/all.min.js -d`
