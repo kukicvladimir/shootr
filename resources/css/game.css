@@ -7,20 +7,3 @@ body {
 	margin: 0;
 	padding: 0
 }
-
-p {
-    font-size: 7em;
-    font-family: 'Pixelate';
-    text-align: center;
-    color: black;
-}
-
-#top-menu {
-	clear: both;
-	position: absolute;
-	width: 100%;
-	z-index: 999999;
-	background: black;
-	opacity: 0.7;
-	color: white;
-}
