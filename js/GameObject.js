@@ -286,7 +286,7 @@
    */
 
   GameObject.prototype.blinkMe = function() {
-    this.tint = 0x0000FF;
+    this.tint = 0xFF0000;
     return setTimeout((function(_this) {
       return function() {
         return _this.tint = 0xFFFFFF;
@@ -295,7 +295,7 @@
   };
 
   GameObject.prototype.respawnBlink = function() {
-    this.tint = 0x0000FF;
+    this.tint = 0xFF0000;
     return setTimeout((function(_this) {
       return function() {
         return _this.tint = 0xFFFFFF;

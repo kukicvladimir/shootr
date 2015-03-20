@@ -202,14 +202,14 @@ GameObject::moveDown = () ->
 Blink object to specified color
 ###
 GameObject::blinkMe = () ->
-  @tint = 0x0000FF
+  @tint = 0xFF0000
   setTimeout(
     () =>
       @tint = 0xFFFFFF
   , 50)
 
 GameObject::respawnBlink = () ->
-  @tint = 0x0000FF
+  @tint = 0xFF0000
   setTimeout(
     () =>
       @tint = 0xFFFFFF
