@@ -48,7 +48,10 @@
       this.velocity.x = Math.abs(this.velocity.x);
     }
     if (this.position.y < 0) {
-      return this.velocity.y = Math.abs(this.velocity.y);
+      this.velocity.y = Math.abs(this.velocity.y);
+    }
+    if (this.position.x > GAME.renderer.width + 300) {
+      return GAME.currentScene.removeChild(this);
     }
   };
 
@@ -72,11 +75,7 @@
     }
   };
 
-  NPC.prototype.onCollision = function() {
-    if (this.position.x > GAME.renderer.width + 300) {
-      return GAME.currentScene.removeChild(this);
-    }
-  };
+  NPC.prototype.onCollision = function() {};
 
   module.exports = NPC;
 

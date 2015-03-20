@@ -1,7 +1,7 @@
 Scene = require("../Scene")
 Player = require("../Player")
 NPC = require("../NPC")
-Vector2 = require("../Vector2")
+Metheor = require("../Metheor")
 
 class Level1 extends Scene
   constructor: () ->
@@ -34,19 +34,23 @@ Level1::update = ()->
   if (@background.y > $(window).height())
     @background.y -= @background.height * 2
 
+
   @background2.y = @count * 0.1 - @background2.height;
   @background2.y %= @background2.height * 2
   if (@background2.y > $(window).height())
     @background2.y -= @background2.height * 2
 
-#  if (@count>1000 and @count < 4000)
+  if (@count%(1000) == 0)
+    metheor = new Metheor()
+    @addChild(metheor, 2) #add metheor after background, so that metheors are always bellow active elements
+
   if (@count%5000 == 0)
     for i in [0..5]
-      position = new Vector2(-i*100, 300)
+      position = new PIXI.Point(-i*100, 300)
 #      position.y = Math.random()*GAME.renderer.height/2#
       opts =
         position: position
-        velocity: new Vector2(1, 0)
+        velocity: new PIXI.Point(1, 0)
       npc = new NPC(opts)
       @addChild(npc)
 

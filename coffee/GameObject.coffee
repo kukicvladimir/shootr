@@ -8,6 +8,7 @@ class GameObject extends PIXI.Sprite
     base = new PIXI.BaseTexture(img)
     texture = new PIXI.Texture(base)
 
+
     super(texture)
     ###
     Unique object identifier

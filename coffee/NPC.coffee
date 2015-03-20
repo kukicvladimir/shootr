@@ -33,6 +33,8 @@ NPC::move = () ->
 
   @velocity.y = Math.abs(@velocity.y) if @position.y < 0
 
+  GAME.currentScene.removeChild(@) if @position.x > GAME.renderer.width + 300
+
 NPC::shoot = () ->
   if Math.random() > 0.99
     position = new PIXI.Point(@position.x + @width/2, @position.y)
@@ -51,7 +53,7 @@ NPC::shoot = () ->
 
 NPC::onCollision = ->
   #remove element if out of game bounds
-  if @position.x > GAME.renderer.width + 300
-    GAME.currentScene.removeChild(@)
+
+
 
 module.exports = NPC
