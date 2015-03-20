@@ -1,5 +1,7 @@
 "use strict"
 PIXI = require("../js/vendor/pixi/bin/pixi.dev.js")
+Geometry = require("./Geometry")
+
 UID = 0
 class GameObject extends PIXI.Sprite
   constructor: (opts...)->
@@ -126,7 +128,7 @@ GameObject::decreaseHealth = (damage) ->
       @health = @baseHealth
 
   if @lifes is 0
-    GAME.stage.removeChild(@sprite)
+    GAME.currentScene.removeChild(@)
 
 ###
 check if object is dead
@@ -221,7 +223,12 @@ GameObject::respawn = () ->
   , 2000)
 
 GameObject::resolveCollisions = ->
-  @onCollision()
+  for object in GAME.currentScene.children
+    if object != @ and !!object?.isCollidable and $.inArray(object.constructor.name, @collidesWith) isnt -1
+      if Geometry.rectangleIntersectsRectangle(@, object)
+        object.onCollision(this)
+        this.onCollision(object)
+
 
 
 GameObject::update = ->

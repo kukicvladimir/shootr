@@ -26,13 +26,14 @@
 
   Bullet.prototype.move = function() {
     this.position.x += this.velocity.x * this.speed;
-    return this.position.y += this.velocity.y * this.speed;
-  };
-
-  Bullet.prototype.onCollision = function() {
+    this.position.y += this.velocity.y * this.speed;
     if (this.position.y > GAME.renderer.height + 300 || this.position.y < -300) {
       return GAME.currentScene.removeChild(this);
     }
+  };
+
+  Bullet.prototype.onCollision = function(obj) {
+    return GAME.currentScene.removeChild(this);
   };
 
   module.exports = Bullet;

@@ -26,7 +26,6 @@ pause = gameManager.createScene("pause", pause)
 gameManager.goToScene("splashScreen")
 
 
-
 GAME.stats = new Stats()
 GAME.stats.setMode(1)
 GAME.stats.domElement.style.zIndex = 999;

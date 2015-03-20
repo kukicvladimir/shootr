@@ -19,6 +19,7 @@ class Metheor extends GameObject
       isMovable: true
       isDead: false
       texture:"resources/img/metheor.png"
+      collidesWith: ["Player"]
     super(opts)
     @init()
     return @
@@ -48,8 +49,8 @@ Metheor::move = () ->
 
   GAME.currentScene.removeChild(@) if (@position.y > GAME.renderer.height)
 
-
-Metheor::onCollision = ->
+Metheor::onCollision = (obj) ->
+  @decreaseHealth(obj.damage)
 
 
 module.exports = Metheor

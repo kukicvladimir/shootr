@@ -1,11 +1,13 @@
 (function() {
   "use strict";
-  var GameObject, PIXI, UID,
+  var GameObject, Geometry, PIXI, UID,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty,
     slice = [].slice;
 
   PIXI = require("../js/vendor/pixi/bin/pixi.dev.js");
+
+  Geometry = require("./Geometry");
 
   UID = 0;
 
@@ -161,7 +163,7 @@
       }
     }
     if (this.lifes === 0) {
-      return GAME.stage.removeChild(this.sprite);
+      return GAME.currentScene.removeChild(this);
     }
   };
 
@@ -307,7 +309,23 @@
   };
 
   GameObject.prototype.resolveCollisions = function() {
-    return this.onCollision();
+    var i, len, object, ref, results;
+    ref = GAME.currentScene.children;
+    results = [];
+    for (i = 0, len = ref.length; i < len; i++) {
+      object = ref[i];
+      if (object !== this && !!(object != null ? object.isCollidable : void 0) && $.inArray(object.constructor.name, this.collidesWith) !== -1) {
+        if (Geometry.rectangleIntersectsRectangle(this, object)) {
+          object.onCollision(this);
+          results.push(this.onCollision(object));
+        } else {
+          results.push(void 0);
+        }
+      } else {
+        results.push(void 0);
+      }
+    }
+    return results;
   };
 
   GameObject.prototype.update = function() {

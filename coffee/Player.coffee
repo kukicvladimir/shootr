@@ -39,7 +39,7 @@ Player::shoot = ->
       isCollidable: true
       isMovable: true
       speed: 10
-      collidesWith: ['NPC']
+      collidesWith: ['NPC', 'Metheor']
     bullet = new Bullet(opts)
     GAME.currentScene.addChild(bullet)
     @lastShotDate = Date.now()
@@ -52,7 +52,8 @@ Player::move = ->
     @moveDown() if (GAME.inputManager.keyDown(GAME.inputManager.Keys.DOWN))
     @shoot() if (GAME.inputManager.keyDown(GAME.inputManager.Keys.SPACE))
 
-Player::onCollision = ->
+Player::onCollision = (obj) ->
+  @decreaseHealth(obj.damage)
 
 module.exports = Player
 

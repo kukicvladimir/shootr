@@ -57,7 +57,7 @@
         isCollidable: true,
         isMovable: true,
         speed: 10,
-        collidesWith: ['NPC']
+        collidesWith: ['NPC', 'Metheor']
       };
       bullet = new Bullet(opts);
       GAME.currentScene.addChild(bullet);
@@ -85,7 +85,9 @@
     }
   };
 
-  Player.prototype.onCollision = function() {};
+  Player.prototype.onCollision = function(obj) {
+    return this.decreaseHealth(obj.damage);
+  };
 
   module.exports = Player;
 

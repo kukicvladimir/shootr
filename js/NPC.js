@@ -20,9 +20,9 @@
       opts = {
         position: position,
         velocity: velocity,
-        health: 3,
+        health: 1,
         lifes: 1,
-        speed: 5,
+        speed: 8,
         damage: 3,
         isCollidable: true,
         isMovable: true,
@@ -75,7 +75,9 @@
     }
   };
 
-  NPC.prototype.onCollision = function() {};
+  NPC.prototype.onCollision = function(obj) {
+    return this.decreaseHealth(obj.damage);
+  };
 
   module.exports = NPC;
 

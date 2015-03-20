@@ -28,7 +28,8 @@
         isCollidable: isCollidable,
         isMovable: true,
         isDead: false,
-        texture: "resources/img/metheor.png"
+        texture: "resources/img/metheor.png",
+        collidesWith: ["Player"]
       };
       Metheor.__super__.constructor.call(this, opts);
       this.init();
@@ -69,7 +70,9 @@
     }
   };
 
-  Metheor.prototype.onCollision = function() {};
+  Metheor.prototype.onCollision = function(obj) {
+    return this.decreaseHealth(obj.damage);
+  };
 
   module.exports = Metheor;
 
