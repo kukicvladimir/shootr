@@ -1,10 +1,12 @@
 (function() {
   "use strict";
-  var $, GameManager, PIXI, gameManager, level1, mainMenu, pause, splashScreen;
+  var $, GameManager, PIXI, Stats, gameManager, level1, mainMenu, pause, splashScreen;
 
   PIXI = require("./vendor/pixi/bin/pixi.dev.js");
 
   $ = require("./vendor/jquery/dist/jquery.js");
+
+  Stats = require("./vendor/stats.js/build/stats.min.js");
 
   GameManager = require("./GameManager.js");
 
@@ -35,5 +37,19 @@
   pause = gameManager.createScene("pause", pause);
 
   gameManager.goToScene("splashScreen");
+
+  GAME.stats = new Stats();
+
+  GAME.stats.setMode(1);
+
+  GAME.stats.domElement.style.zIndex = 999;
+
+  GAME.stats.domElement.style.position = 'absolute';
+
+  GAME.stats.domElement.style.left = '0px';
+
+  GAME.stats.domElement.style.top = '0px';
+
+  document.body.appendChild(GAME.stats.domElement);
 
 }).call(this);
