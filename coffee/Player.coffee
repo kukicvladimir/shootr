@@ -1,12 +1,12 @@
 "use strict"
 GameObject = require("./GameObject")
-Vector2 = require("./Vector2")
 Bullet = require("./Bullet")
 
 class Player extends GameObject
   constructor: () ->
-    position = new Vector2(0, 0)
-    velocity = new Vector2(0, 0)
+    position = new PIXI.Point(0, 0)
+    velocity = new PIXI.Point(0, 0)
+
     opts =
       position: position
       velocity: velocity
@@ -17,21 +17,21 @@ class Player extends GameObject
       isCollidable: true
       isMovable: true
       isShieldActive: false
-      sprite:"resources/img/spaceship.gif"
+      texture: "resources/img/spaceship.gif"
       shotDelay: 150
     super(opts)
     @init()
     return @
 
 Player::init = () ->
-  @position.x = GAME.renderer.width/2 - @sprite.width/2
+  @position.x = GAME.renderer.width/2 - @width/2
   @position.y = GAME.renderer.height - 100
 
 Player::shoot = ->
   return if @isDead()
   if @lastShotDate < Date.now() - @shotDelay
-    velocity = new Vector2(0, -1)
-    position = new Vector2(@position.x + @sprite.width/2, @position.y)
+    velocity = new PIXI.Point(0, -1)
+    position = new PIXI.Point(@position.x + @width/2, @position.y)
     opts =
       damage: @damage
       position: position
@@ -39,12 +39,9 @@ Player::shoot = ->
       isCollidable: true
       isMovable: true
       speed: 10
-      sprite: "resources/img/bullet.png"
       collidesWith: ['NPC']
     bullet = new Bullet(opts)
-#    @bullets.push bullet
-    GAME.objects.push(bullet)
-    GAME.currentScene.addChild(bullet.sprite)
+    GAME.currentScene.addChild(bullet)
     @lastShotDate = Date.now()
 
 Player::move = ->

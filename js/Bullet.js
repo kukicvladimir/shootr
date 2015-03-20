@@ -1,12 +1,10 @@
 (function() {
-  var Bullet, GameObject, Vector2,
+  var Bullet, GameObject,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty,
     slice = [].slice;
 
   GameObject = require("./GameObject");
-
-  Vector2 = require("./Vector2");
 
   Bullet = (function(superClass) {
     extend(Bullet, superClass);
@@ -17,7 +15,7 @@
       this.damage = opts[0].damage;
       this.position = opts[0].position;
       this.velocity = opts[0].velocity;
-      this.sprite = PIXI.Sprite.fromImage("resources/img/bullet.png");
+      opts[0].texture = "resources/img/bullet.png";
       Bullet.__super__.constructor.call(this, opts[0]);
       return this;
     }
@@ -31,7 +29,11 @@
     return this.position.y += this.velocity.y * this.speed;
   };
 
-  Bullet.prototype.onCollision = function() {};
+  Bullet.prototype.onCollision = function() {
+    if (this.position.y > GAME.renderer.height + 300 || this.position.y < -300) {
+      return GAME.currentScene.removeChild(this);
+    }
+  };
 
   module.exports = Bullet;
 

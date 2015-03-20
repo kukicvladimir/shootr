@@ -1,38 +1,102 @@
 (function() {
   "use strict";
-  var GameObject, UID, Vector2,
+  var GameObject, PIXI, UID,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty,
     slice = [].slice;
 
-  Vector2 = require("./Vector2");
+  PIXI = require("../js/vendor/pixi/bin/pixi.dev.js");
 
   UID = 0;
 
-  GameObject = (function() {
+  GameObject = (function(superClass) {
+    extend(GameObject, superClass);
+
     function GameObject() {
-      var opts;
+      var base, img, opts, texture;
       opts = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-      this.uid = UID++;
+      img = new Image();
+      img.src = opts[0].texture;
+      base = new PIXI.BaseTexture(img);
+      texture = new PIXI.Texture(base);
+      GameObject.__super__.constructor.call(this, texture);
+
+      /*
+      Unique object identifier
+       */
+      this._uid = UID++;
+
+      /*
+      Object position
+       */
       this.position = opts[0].position;
+
+      /*
+      Object speed
+       */
       this.speed = GAME.speed + opts[0].speed;
+
+      /*
+      Object velocity
+       */
       this.velocity = opts[0].velocity;
+
+      /*
+      Object health
+       */
       this.health = opts[0].health;
+
+      /*
+      Object base health - used for HUD calculation only
+       */
       this.baseHealth = opts[0].health;
+
+      /*
+      Object lifes - integer value
+      Number of object lifes
+       */
       this.lifes = opts[0].lifes;
+
+      /*
+      Object damage - integer value
+       */
       this.damage = opts[0].damage;
-      this.isShieldActive = opts[0].isShieldActive;
+
+      /*
+      Object isMovable - boolean value
+      determines if object is movable
+       */
       this.isMovable = opts[0].isMovable || false;
+
+      /*
+      Object isCollidable - boolean value
+      determines if object is collidable
+       */
       this.isCollidable = opts[0].isCollidable || false;
+
+      /*
+      Object collidesWith - list
+      list of collidable objects
+       */
       this.collidesWith = opts[0].collidesWith || [];
-      this.sprite = PIXI.Sprite.fromImage(opts[0].sprite);
-      this.sprite.position = this.position;
+
+      /*
+      Object lastShotDate - date
+      used to determine if Object can shoot (depends on shotDelay
+       */
       this.lastShotDate = null;
+
+      /*
+      Object shotDelay- integer value
+      shot delay in milliseconds
+       */
       this.shotDelay = opts[0].shotDelay;
       return this;
     }
 
     return GameObject;
 
-  })();
+  })(PIXI.Sprite);
 
 
   /*
@@ -177,8 +241,8 @@
     }
     this.velocity.x = 1;
     this.position.x += this.velocity.x * this.speed * GAME.speed;
-    if (this.position.x > GAME.renderer.width - this.sprite.width) {
-      return this.position.x = GAME.renderer.width - this.sprite.width;
+    if (this.position.x > GAME.renderer.width - this.width) {
+      return this.position.x = GAME.renderer.width - this.width;
     }
   };
 
@@ -209,8 +273,8 @@
     }
     this.velocity.y = 1;
     this.position.y += this.velocity.y * this.speed * GAME.speed;
-    if (this.position.y > GAME.renderer.height - this.sprite.height) {
-      return this.position.y = GAME.renderer.height - this.sprite.height;
+    if (this.position.y > GAME.renderer.height - this.height) {
+      return this.position.y = GAME.renderer.height - this.height;
     }
   };
 
@@ -220,19 +284,19 @@
    */
 
   GameObject.prototype.blinkMe = function() {
-    this.sprite.tint = 0x0000FF;
+    this.tint = 0x0000FF;
     return setTimeout((function(_this) {
       return function() {
-        return _this.sprite.tint = 0xFFFFFF;
+        return _this.tint = 0xFFFFFF;
       };
     })(this), 50);
   };
 
   GameObject.prototype.respawnBlink = function() {
-    this.sprite.tint = 0x0000FF;
+    this.tint = 0x0000FF;
     return setTimeout((function(_this) {
       return function() {
-        return _this.sprite.tint = 0xFFFFFF;
+        return _this.tint = 0xFFFFFF;
       };
     })(this), 2000);
   };
@@ -242,7 +306,9 @@
     return setTimeout(this.respawnBlink(), this.setCollidable(true), 2000);
   };
 
-  GameObject.prototype.resolveCollisions = function() {};
+  GameObject.prototype.resolveCollisions = function() {
+    return this.onCollision();
+  };
 
   GameObject.prototype.update = function() {
     if (this.isMovable) {

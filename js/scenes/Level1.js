@@ -18,16 +18,17 @@
       Level1.__super__.constructor.call(this);
       this.background = PIXI.Sprite.fromImage("resources/img/sky1.png");
       this.background.tint = 0x0000FF;
+      this.background._uid = 999;
       this.background2 = PIXI.Sprite.fromImage("resources/img/sky2.png");
       this.background2.tint = 0x0000FF;
+      this.background._uid = 1000;
       this.background.position.x = 0;
       this.background.position.y = 0;
       this.count = 0;
       this.addChild(this.background);
       this.addChild(this.background2);
       this.player = new Player();
-      this.addChild(this.player.sprite);
-      GAME.objects.push(this.player);
+      this.addChild(this.player);
     }
 
     return Level1;
@@ -55,8 +56,7 @@
           velocity: new Vector2(1, 0)
         };
         npc = new NPC(opts);
-        this.addChild(npc.sprite);
-        GAME.objects.push(npc);
+        this.addChild(npc);
       }
     }
     if (GAME.inputManager.keyDown(GAME.inputManager.Keys.P)) {

@@ -1,12 +1,10 @@
 (function() {
   "use strict";
-  var Bullet, GameObject, Player, Vector2,
+  var Bullet, GameObject, Player,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
   GameObject = require("./GameObject");
-
-  Vector2 = require("./Vector2");
 
   Bullet = require("./Bullet");
 
@@ -15,8 +13,8 @@
 
     function Player() {
       var opts, position, velocity;
-      position = new Vector2(0, 0);
-      velocity = new Vector2(0, 0);
+      position = new PIXI.Point(0, 0);
+      velocity = new PIXI.Point(0, 0);
       opts = {
         position: position,
         velocity: velocity,
@@ -27,7 +25,7 @@
         isCollidable: true,
         isMovable: true,
         isShieldActive: false,
-        sprite: "resources/img/spaceship.gif",
+        texture: "resources/img/spaceship.gif",
         shotDelay: 150
       };
       Player.__super__.constructor.call(this, opts);
@@ -40,7 +38,7 @@
   })(GameObject);
 
   Player.prototype.init = function() {
-    this.position.x = GAME.renderer.width / 2 - this.sprite.width / 2;
+    this.position.x = GAME.renderer.width / 2 - this.width / 2;
     return this.position.y = GAME.renderer.height - 100;
   };
 
@@ -50,8 +48,8 @@
       return;
     }
     if (this.lastShotDate < Date.now() - this.shotDelay) {
-      velocity = new Vector2(0, -1);
-      position = new Vector2(this.position.x + this.sprite.width / 2, this.position.y);
+      velocity = new PIXI.Point(0, -1);
+      position = new PIXI.Point(this.position.x + this.width / 2, this.position.y);
       opts = {
         damage: this.damage,
         position: position,
@@ -59,12 +57,10 @@
         isCollidable: true,
         isMovable: true,
         speed: 10,
-        sprite: "resources/img/bullet.png",
         collidesWith: ['NPC']
       };
       bullet = new Bullet(opts);
-      GAME.objects.push(bullet);
-      GAME.currentScene.addChild(bullet.sprite);
+      GAME.currentScene.addChild(bullet);
       return this.lastShotDate = Date.now();
     }
   };

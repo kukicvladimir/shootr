@@ -9,8 +9,12 @@ class Level1 extends Scene
 
     @background = PIXI.Sprite.fromImage("resources/img/sky1.png")
     @background.tint=0x0000FF
+    @background._uid = 999
+
     @background2 = PIXI.Sprite.fromImage("resources/img/sky2.png")
     @background2.tint=0x0000FF
+    @background._uid = 1000
+
     @background.position.x = 0
     @background.position.y = 0
     @count = 0
@@ -19,8 +23,7 @@ class Level1 extends Scene
     @addChild(@background2)
 
     @player = new Player()
-    @addChild(@player.sprite)
-    GAME.objects.push(@player)
+    @addChild(@player)
 
 
 Level1::update = ()->
@@ -45,8 +48,7 @@ Level1::update = ()->
         position: position
         velocity: new Vector2(1, 0)
       npc = new NPC(opts)
-      @addChild(npc.sprite)
-      GAME.objects.push(npc)
+      @addChild(npc)
 
   GAME.goToScene("pause") if (GAME.inputManager.keyDown(GAME.inputManager.Keys.P))
 

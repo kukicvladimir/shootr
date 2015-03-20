@@ -1,26 +1,82 @@
 "use strict"
-Vector2 = require("./Vector2")
+PIXI = require("../js/vendor/pixi/bin/pixi.dev.js")
 UID = 0
-class GameObject
+class GameObject extends PIXI.Sprite
   constructor: (opts...)->
-    @uid = UID++
+    img = new Image()
+    img.src = opts[0].texture
+    base = new PIXI.BaseTexture(img)
+    texture = new PIXI.Texture(base)
+
+    super(texture)
+    ###
+    Unique object identifier
+    ###
+    @_uid = UID++
+
+    ###
+    Object position
+    ###
     @position = opts[0].position
+    ###
+    Object speed
+    ###
     @speed = GAME.speed + opts[0].speed
+
+    ###
+    Object velocity
+    ###
     @velocity = opts[0].velocity
 
+    ###
+    Object health
+    ###
     @health = opts[0].health
+
+    ###
+    Object base health - used for HUD calculation only
+    ###
     @baseHealth = opts[0].health
+
+    ###
+    Object lifes - integer value
+    Number of object lifes
+    ###
     @lifes = opts[0].lifes
+
+    ###
+    Object damage - integer value
+    ###
     @damage = opts[0].damage
 
-    @isShieldActive = opts[0].isShieldActive
+    ###
+    Object isMovable - boolean value
+    determines if object is movable
+    ###
     @isMovable = opts[0].isMovable || false
+
+    ###
+    Object isCollidable - boolean value
+    determines if object is collidable
+    ###
     @isCollidable = opts[0].isCollidable || false
+
+    ###
+    Object collidesWith - list
+    list of collidable objects
+    ###
     @collidesWith = opts[0].collidesWith || []
 
-    @sprite = PIXI.Sprite.fromImage(opts[0].sprite)
-    @sprite.position = @position
+    ###
+    Object lastShotDate - date
+    used to determine if Object can shoot (depends on shotDelay
+    ###
     @lastShotDate = null
+
+    ###
+    Object shotDelay- integer value
+    shot delay in milliseconds
+    ###
     @shotDelay = opts[0].shotDelay
 
     return @
@@ -116,8 +172,8 @@ GameObject::moveRight = () ->
   return if not @isMovable
   @velocity.x = 1
   @position.x += @velocity.x * @speed * GAME.speed
-  if @position.x > GAME.renderer.width - @sprite.width
-    @position.x = GAME.renderer.width - @sprite.width
+  if @position.x > GAME.renderer.width - @width
+    @position.x = GAME.renderer.width - @width
 
 ###
 Move object up
@@ -136,24 +192,24 @@ GameObject::moveDown = () ->
   return if not @isMovable
   @velocity.y = 1
   @position.y += @velocity.y * @speed * GAME.speed
-  if @position.y > GAME.renderer.height - @sprite.height
-    @position.y = GAME.renderer.height - @sprite.height
+  if @position.y > GAME.renderer.height - @height
+    @position.y = GAME.renderer.height - @height
 
 ###
 Blink object to specified color
 ###
 GameObject::blinkMe = () ->
-  @sprite.tint = 0x0000FF
+  @tint = 0x0000FF
   setTimeout(
     () =>
-      @sprite.tint = 0xFFFFFF
+      @tint = 0xFFFFFF
   , 50)
 
 GameObject::respawnBlink = () ->
-  @sprite.tint = 0x0000FF
+  @tint = 0x0000FF
   setTimeout(
     () =>
-      @sprite.tint = 0xFFFFFF
+      @tint = 0xFFFFFF
   , 2000)
 
 GameObject::respawn = () ->
@@ -164,6 +220,7 @@ GameObject::respawn = () ->
   , 2000)
 
 GameObject::resolveCollisions = ->
+  @onCollision()
 
 
 GameObject::update = ->

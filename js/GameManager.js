@@ -12,7 +12,6 @@
       this.renderer = PIXI.IRenderer;
       this.currentScene = null;
       this.scenes = {};
-      this.objects = [];
       this.speed = 1;
       this.rightButton = false;
       this.leftButton = false;
@@ -81,13 +80,17 @@
       render = function() {
         var i, len, object, ref;
         requestAnimationFrame(render);
-        ref = GAME.objects;
-        for (i = 0, len = ref.length; i < len; i++) {
-          object = ref[i];
-          object.update();
-        }
         if (!GAME.currentScene || GAME.currentScene.isPaused()) {
           return;
+        }
+        ref = GAME.currentScene.children;
+        for (i = 0, len = ref.length; i < len; i++) {
+          object = ref[i];
+          if (object != null) {
+            if (typeof object.update === "function") {
+              object.update();
+            }
+          }
         }
         GAME.currentScene.update();
         return GAME.renderer.render(GAME.currentScene);
