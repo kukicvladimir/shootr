@@ -2,6 +2,7 @@ Scene = require("../Scene")
 Player = require("../Player")
 NPC = require("../NPC")
 Metheor = require("../Metheor")
+HUDManager = require("../HUDManager")
 
 class Level1 extends Scene
   constructor: () ->
@@ -24,7 +25,7 @@ class Level1 extends Scene
 
     @player = new Player()
     @addChild(@player)
-
+    GAME.hud = new HUDManager(@)
 
 Level1::update = ()->
   @count+=GAME.speed*10

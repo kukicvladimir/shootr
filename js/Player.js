@@ -86,7 +86,8 @@
   };
 
   Player.prototype.onCollision = function(obj) {
-    return this.decreaseHealth(obj.damage);
+    this.decreaseHealth(obj.damage);
+    return GAME.hud.updateHealthBarAndLifes(this.health, this.baseHealth, this.lifes);
   };
 
   module.exports = Player;

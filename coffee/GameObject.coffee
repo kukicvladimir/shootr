@@ -222,14 +222,15 @@ GameObject::respawn = () ->
     @setCollidable(true)
   , 2000)
 
+###
+Resolve collisions - Iterater through all game  objects and  resolve collisions on collided objects
+###
 GameObject::resolveCollisions = ->
   for object in GAME.currentScene.children
     if object != @ and !!object?.isCollidable and $.inArray(object.constructor.name, @collidesWith) isnt -1
       if Geometry.rectangleIntersectsRectangle(@, object)
         object.onCollision(this)
         this.onCollision(object)
-
-
 
 GameObject::update = ->
   @move() if @isMovable

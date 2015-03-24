@@ -36,7 +36,7 @@ NPC::move = () ->
   GAME.currentScene.removeChild(@) if @position.x > GAME.renderer.width + 300
 
 NPC::shoot = () ->
-  if Math.random() > 0.99
+  if Math.random() > 0.95
     position = new PIXI.Point(@position.x + @width/2, @position.y)
     velocity = new PIXI.Point(0, 1)
     opts =
@@ -53,5 +53,6 @@ NPC::shoot = () ->
 
 NPC::onCollision = (obj)->
   @decreaseHealth(obj.damage)
+  GAME.hud.updateScore(50)
 
 module.exports = NPC

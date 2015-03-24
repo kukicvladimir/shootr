@@ -51,6 +51,7 @@ Metheor::move = () ->
 
 Metheor::onCollision = (obj) ->
   @decreaseHealth(obj.damage)
+  GAME.hud.updateScore(Math.round(@speed)) #lets say faster it is more points you get
 
 
 module.exports = Metheor

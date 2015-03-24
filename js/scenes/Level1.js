@@ -1,5 +1,5 @@
 (function() {
-  var Level1, Metheor, NPC, Player, Scene,
+  var HUDManager, Level1, Metheor, NPC, Player, Scene,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
@@ -10,6 +10,8 @@
   NPC = require("../NPC");
 
   Metheor = require("../Metheor");
+
+  HUDManager = require("../HUDManager");
 
   Level1 = (function(superClass) {
     extend(Level1, superClass);
@@ -29,6 +31,7 @@
       this.addChild(this.background2);
       this.player = new Player();
       this.addChild(this.player);
+      GAME.hud = new HUDManager(this);
     }
 
     return Level1;

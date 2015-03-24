@@ -71,7 +71,8 @@
   };
 
   Metheor.prototype.onCollision = function(obj) {
-    return this.decreaseHealth(obj.damage);
+    this.decreaseHealth(obj.damage);
+    return GAME.hud.updateScore(Math.round(this.speed));
   };
 
   module.exports = Metheor;

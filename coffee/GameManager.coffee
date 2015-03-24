@@ -2,7 +2,6 @@
 Scene = require("./Scene")
 InputManager = require("./InputManager")
 
-
 class GameManager
   constructor: () ->
     @speed = 1
@@ -16,7 +15,7 @@ class GameManager
     @upButton = false
     @downButton = false
     @shootButton = false
-    @inputManager = new InputManager();
+    @inputManager = new InputManager()
 
     return @
 ###
@@ -62,13 +61,13 @@ GameManager::create = (width, height) ->
 
 GameManager::loop = =>
   render = =>
-    GAME.stats.begin()
+#    GAME.stats.begin()#
     requestAnimationFrame(render)
     return if not GAME.currentScene or GAME.currentScene.isPaused()
     for object in GAME.currentScene.children
       object?.update?()
     GAME.currentScene.update()
     GAME.renderer.render(GAME.currentScene)
-    GAME.stats.end()
+#    GAME.stats.end()
   render()
 module.exports = GameManager

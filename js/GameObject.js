@@ -308,6 +308,11 @@
     return setTimeout(this.respawnBlink(), this.setCollidable(true), 2000);
   };
 
+
+  /*
+  Resolve collisions - Iterater through all game  objects and  resolve collisions on collided objects
+   */
+
   GameObject.prototype.resolveCollisions = function() {
     var i, len, object, ref, results;
     ref = GAME.currentScene.children;

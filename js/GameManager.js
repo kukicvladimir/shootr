@@ -79,7 +79,6 @@
       var render;
       render = function() {
         var i, len, object, ref;
-        GAME.stats.begin();
         requestAnimationFrame(render);
         if (!GAME.currentScene || GAME.currentScene.isPaused()) {
           return;
@@ -94,8 +93,7 @@
           }
         }
         GAME.currentScene.update();
-        GAME.renderer.render(GAME.currentScene);
-        return GAME.stats.end();
+        return GAME.renderer.render(GAME.currentScene);
       };
       return render();
     };

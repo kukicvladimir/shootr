@@ -54,6 +54,7 @@ Player::move = ->
 
 Player::onCollision = (obj) ->
   @decreaseHealth(obj.damage)
+  GAME.hud.updateHealthBarAndLifes(@health, @baseHealth, @lifes)
 
 module.exports = Player
 
