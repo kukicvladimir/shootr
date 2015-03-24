@@ -128,6 +128,7 @@ GameObject::decreaseHealth = (damage) ->
       @health = @baseHealth
 
   if @lifes is 0
+    GAME.goToScene("gameOver") if @constructor.name == 'Player'
     GAME.currentScene.removeChild(@)
 
 ###

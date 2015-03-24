@@ -163,6 +163,9 @@
       }
     }
     if (this.lifes === 0) {
+      if (this.constructor.name === 'Player') {
+        GAME.goToScene("gameOver");
+      }
       return GAME.currentScene.removeChild(this);
     }
   };

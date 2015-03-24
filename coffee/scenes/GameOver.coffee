@@ -3,7 +3,7 @@ Scene = require("../Scene")
 class GameOverMenu extends Scene
   constructor: () ->
     super()
-    @title = new PIXI.Text("GAME OVER", {font: "150px Pixelate", fill: "#5ACAFA", align: "center", stroke: "#FFFFFF", strokeThickness: 6})
+    @title = new PIXI.Text("GAME OVER", {font: "150px Pixelate", fill: "#FF0000", align: "center", stroke: "#FFFFFF", strokeThickness: 6})
     @title.position.x = $(window).width()/2 - @title.width/2
     @title.position.y = $(window).height()/2 - @title.height/2
 
@@ -23,7 +23,10 @@ class GameOverMenu extends Scene
     @addChild(@anyKey)
 
 GameOverMenu::update = () ->
-  GAME.goToScene("level1") if (GAME.inputManager.keyDown(GAME.inputManager.Keys.R))
+  if (GAME.inputManager.keyDown(GAME.inputManager.Keys.R))
+    GAME.scenes.level1.reset()
+    GAME.goToScene("level1")
+
   @background.y -= 0.1
   @background.y %= @background.height * 2
   @background.y -= @background.height*2 if (@background.y>$(window).height())

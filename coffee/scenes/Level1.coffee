@@ -7,25 +7,33 @@ HUDManager = require("../HUDManager")
 class Level1 extends Scene
   constructor: () ->
     super()
+    @init()
 
-    @background = PIXI.Sprite.fromImage("resources/img/sky1.png")
-    @background.tint=0x0000FF
-    @background._uid = 999
+Level1::init = () ->
+  @background = PIXI.Sprite.fromImage("resources/img/sky1.png")
+  @background.tint=0x0000FF
+  @background._uid = 999
 
-    @background2 = PIXI.Sprite.fromImage("resources/img/sky2.png")
-    @background2.tint=0x0000FF
-    @background._uid = 1000
+  @background2 = PIXI.Sprite.fromImage("resources/img/sky2.png")
+  @background2.tint=0x0000FF
+  @background._uid = 1000
 
-    @background.position.x = 0
-    @background.position.y = 0
-    @count = 0
+  @background.position.x = 0
+  @background.position.y = 0
+  @count = 0
 
-    @addChild(@background)
-    @addChild(@background2)
+  @addChild(@background)
+  @addChild(@background2)
 
-    @player = new Player()
-    @addChild(@player)
-    GAME.hud = new HUDManager(@)
+  @player = new Player()
+  @addChild(@player)
+  GAME.hud = new HUDManager(@)
+
+
+Level1::reset = () ->
+  @count = 0
+  @removeChildren()
+  @init()
 
 Level1::update = ()->
   @count+=GAME.speed*10

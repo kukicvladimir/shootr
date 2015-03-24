@@ -18,25 +18,35 @@
 
     function Level1() {
       Level1.__super__.constructor.call(this);
-      this.background = PIXI.Sprite.fromImage("resources/img/sky1.png");
-      this.background.tint = 0x0000FF;
-      this.background._uid = 999;
-      this.background2 = PIXI.Sprite.fromImage("resources/img/sky2.png");
-      this.background2.tint = 0x0000FF;
-      this.background._uid = 1000;
-      this.background.position.x = 0;
-      this.background.position.y = 0;
-      this.count = 0;
-      this.addChild(this.background);
-      this.addChild(this.background2);
-      this.player = new Player();
-      this.addChild(this.player);
-      GAME.hud = new HUDManager(this);
+      this.init();
     }
 
     return Level1;
 
   })(Scene);
+
+  Level1.prototype.init = function() {
+    this.background = PIXI.Sprite.fromImage("resources/img/sky1.png");
+    this.background.tint = 0x0000FF;
+    this.background._uid = 999;
+    this.background2 = PIXI.Sprite.fromImage("resources/img/sky2.png");
+    this.background2.tint = 0x0000FF;
+    this.background._uid = 1000;
+    this.background.position.x = 0;
+    this.background.position.y = 0;
+    this.count = 0;
+    this.addChild(this.background);
+    this.addChild(this.background2);
+    this.player = new Player();
+    this.addChild(this.player);
+    return GAME.hud = new HUDManager(this);
+  };
+
+  Level1.prototype.reset = function() {
+    this.count = 0;
+    this.removeChildren();
+    return this.init();
+  };
 
   Level1.prototype.update = function() {
     var i, j, metheor, npc, opts, position;

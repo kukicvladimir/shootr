@@ -12,7 +12,7 @@
       GameOverMenu.__super__.constructor.call(this);
       this.title = new PIXI.Text("GAME OVER", {
         font: "150px Pixelate",
-        fill: "#5ACAFA",
+        fill: "#FF0000",
         align: "center",
         stroke: "#FFFFFF",
         strokeThickness: 6
@@ -42,6 +42,7 @@
 
   GameOverMenu.prototype.update = function() {
     if (GAME.inputManager.keyDown(GAME.inputManager.Keys.R)) {
+      GAME.scenes.level1.reset();
       GAME.goToScene("level1");
     }
     this.background.y -= 0.1;
