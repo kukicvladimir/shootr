@@ -3,7 +3,7 @@
 GameObject = require("./GameObject")
 Bullet = require("./Bullet")
 
-class NPC extends GameObject
+class YellowQueen extends GameObject
   constructor: (opts...) ->
     position = opts[0].position
     velocity = opts[0].velocity
@@ -11,48 +11,56 @@ class NPC extends GameObject
     opts =
       position: position
       velocity: velocity
-      health: 1
+      health: 500
       lifes: 1
       speed: 4
-      damage: 1
+      damage: 3
       isCollidable: true
       isMovable: true
       isShieldActive: false
       shield: 0
       isDead: false
-      texture: "resources/img/alien.png"
+      texture: "resources/img/queen.png"
       shotDelay: 150
     super(opts)
     return @
-
-NPC::move = () ->
+#
+YellowQueen::move = () ->
   @shoot()
   @position.x += @velocity.x * @speed
   @position.y += @velocity.y * @speed
   @velocity.x = Math.abs(@velocity.x) if @position.x < 0
+  @velocity.x = -@velocity.x if @position.x > GAME.renderer.width - @width
 
   @velocity.y = Math.abs(@velocity.y) if @position.y < 0
+  @velocity.y = -@velocity.y if @position.y > GAME.renderer.height/2
 
   GAME.currentScene.removeChild(@) if @position.x > GAME.renderer.width + 300
 
-NPC::shoot = () ->
-  if Math.random() > 0.99
+YellowQueen::shoot = () ->
+  if Math.random() > 0.80
     position = new PIXI.Point(@position.x + @width/2, @position.y)
-    velocity = new PIXI.Point(0, 1)
+    rand = Math.random()
+    directionX = -2
+    directionX = -1 if rand > 0.2
+    directionX = 0 if rand > 0.4
+    directionX = 1 if rand > 0.6
+    directionX = 2 if rand > 0.8
+    velocity = new PIXI.Point(directionX, 1)
     opts =
       position: position
       velocity: velocity
       damage: @damage
       isCollidable: true
       isMovable: true
-      speed: 11
+      speed: 4
       collidesWith: ['Player']
     bullet = new Bullet(opts)
     GAME.currentScene.addChild(bullet)
     @lastShotDate = Date.now()
 
-NPC::onCollision = (obj)->
+YellowQueen::onCollision = (obj)->
   @decreaseHealth(obj.damage)
-  GAME.hud.updateScore(50)
+  GAME.hud.updateScore(20)
 
-module.exports = NPC
+module.exports = YellowQueen

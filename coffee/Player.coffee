@@ -39,7 +39,7 @@ Player::shoot = ->
       isCollidable: true
       isMovable: true
       speed: 10
-      collidesWith: ['NPC', 'Metheor']
+      collidesWith: ['NPC', 'Metheor', 'YellowQueen']
     bullet = new Bullet(opts)
     GAME.currentScene.addChild(bullet)
     @lastShotDate = Date.now()

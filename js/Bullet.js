@@ -27,7 +27,7 @@
   Bullet.prototype.move = function() {
     this.position.x += this.velocity.x * this.speed;
     this.position.y += this.velocity.y * this.speed;
-    if (this.position.y > GAME.renderer.height + 300 || this.position.y < -300) {
+    if (this.position.y > GAME.renderer.height + 300 || this.position.y < -300 || this.position.x < 0 || this.position.x > GAME.renderer.width) {
       return GAME.currentScene.removeChild(this);
     }
   };

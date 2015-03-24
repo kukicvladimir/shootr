@@ -13,7 +13,7 @@ Bullet::move = () ->
   @position.x += @velocity.x * @speed
   @position.y += @velocity.y * @speed
 
-  if (@position.y > GAME.renderer.height + 300 or @position.y < -300)
+  if (@position.y > GAME.renderer.height + 300 or @position.y < -300 or @position.x<0 or @position.x > GAME.renderer.width )
     GAME.currentScene.removeChild(@)
 
 Bullet::onCollision = (obj) ->

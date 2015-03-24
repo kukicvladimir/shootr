@@ -1,6 +1,7 @@
 Scene = require("../Scene")
 Player = require("../Player")
 NPC = require("../NPC")
+YellowQueen = require("../YellowQueen")
 Metheor = require("../Metheor")
 HUDManager = require("../HUDManager")
 levelScript = require("../../resources/json/level.json")
@@ -50,6 +51,7 @@ Level1::update = ()->
   if (@background2.y > $(window).height())
     @background2.y -= @background2.height * 2
 
+  @count = 0 if @count > 240000 #TODO: change to real loop end when last queen dies
   if (@count%(1000) == 0)
     metheor = new Metheor()
     @addChild(metheor, 2) #add metheor after background, so that metheors are always bellow active elements
@@ -61,10 +63,10 @@ Level1::update = ()->
         opts =
           position: position
           velocity: new PIXI.Point(props.velocity.x, props.velocity.y)
-
+#
         switch key
           when "NPC" then npc = new NPC(opts)
-
+          when "YellowQueen" then npc = new YellowQueen(opts)
         @addChild(npc)
 
 

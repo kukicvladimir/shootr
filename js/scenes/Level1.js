@@ -1,5 +1,5 @@
 (function() {
-  var HUDManager, Level1, Metheor, NPC, Player, Scene, levelScript,
+  var HUDManager, Level1, Metheor, NPC, Player, Scene, YellowQueen, levelScript,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
@@ -8,6 +8,8 @@
   Player = require("../Player");
 
   NPC = require("../NPC");
+
+  YellowQueen = require("../YellowQueen");
 
   Metheor = require("../Metheor");
 
@@ -63,6 +65,9 @@
     if (this.background2.y > $(window).height()) {
       this.background2.y -= this.background2.height * 2;
     }
+    if (this.count > 240000) {
+      this.count = 0;
+    }
     if (this.count % 1000. === 0) {
       metheor = new Metheor();
       this.addChild(metheor, 2);
@@ -80,6 +85,9 @@
           switch (key) {
             case "NPC":
               npc = new NPC(opts);
+              break;
+            case "YellowQueen":
+              npc = new YellowQueen(opts);
           }
           this.addChild(npc);
         }
