@@ -1,5 +1,5 @@
 (function() {
-  var HUDManager, Level1, Metheor, NPC, Player, Scene,
+  var HUDManager, Level1, Metheor, NPC, Player, Scene, levelScript,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
@@ -12,6 +12,8 @@
   Metheor = require("../Metheor");
 
   HUDManager = require("../HUDManager");
+
+  levelScript = require("../../resources/json/level.json");
 
   Level1 = (function(superClass) {
     extend(Level1, superClass);
@@ -49,7 +51,7 @@
   };
 
   Level1.prototype.update = function() {
-    var i, j, metheor, npc, opts, position;
+    var i, j, key, metheor, npc, opts, position, props, ref, ref1;
     this.count += GAME.speed * 10;
     this.background.y = this.count * 0.1;
     this.background.y %= this.background.height * 2;
@@ -65,15 +67,22 @@
       metheor = new Metheor();
       this.addChild(metheor, 2);
     }
-    if (this.count % 5000 === 0) {
-      for (i = j = 0; j <= 5; i = ++j) {
-        position = new PIXI.Point(-i * 100, 300);
-        opts = {
-          position: position,
-          velocity: new PIXI.Point(1, 0)
-        };
-        npc = new NPC(opts);
-        this.addChild(npc);
+    if (!!levelScript[this.count]) {
+      ref = levelScript[this.count];
+      for (key in ref) {
+        props = ref[key];
+        for (i = j = 0, ref1 = props.count; 0 <= ref1 ? j < ref1 : j > ref1; i = 0 <= ref1 ? ++j : --j) {
+          position = new PIXI.Point(props.position.x - i * 100, props.position.y);
+          opts = {
+            position: position,
+            velocity: new PIXI.Point(props.velocity.x, props.velocity.y)
+          };
+          switch (key) {
+            case "NPC":
+              npc = new NPC(opts);
+          }
+          this.addChild(npc);
+        }
       }
     }
     if (GAME.inputManager.keyDown(GAME.inputManager.Keys.P)) {

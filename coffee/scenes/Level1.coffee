@@ -3,6 +3,7 @@ Player = require("../Player")
 NPC = require("../NPC")
 Metheor = require("../Metheor")
 HUDManager = require("../HUDManager")
+levelScript = require("../../resources/json/level.json")
 
 class Level1 extends Scene
   constructor: () ->
@@ -53,15 +54,19 @@ Level1::update = ()->
     metheor = new Metheor()
     @addChild(metheor, 2) #add metheor after background, so that metheors are always bellow active elements
 
-  if (@count%5000 == 0)
-    for i in [0..5]
-      position = new PIXI.Point(-i*100, 300)
-#      position.y = Math.random()*GAME.renderer.height/2#
-      opts =
-        position: position
-        velocity: new PIXI.Point(1, 0)
-      npc = new NPC(opts)
-      @addChild(npc)
+  if (!!levelScript[@count])
+    for key, props of levelScript[@count]
+      for i in [0...props.count]
+        position = new PIXI.Point(props.position.x-i*100, props.position.y)
+        opts =
+          position: position
+          velocity: new PIXI.Point(props.velocity.x, props.velocity.y)
+
+        switch key
+          when "NPC" then npc = new NPC(opts)
+
+        @addChild(npc)
+
 
   GAME.goToScene("pause") if (GAME.inputManager.keyDown(GAME.inputManager.Keys.P))
 

@@ -42,23 +42,8 @@
 
   })(GameObject);
 
-  RetardedNPC.prototype.init = function() {
-    this.bullets = [];
-    this.position.x = Math.random() * (GameLoop.renderer.width / 2);
-    this.position.y = Math.random() * (GameLoop.renderer.height / 2);
-    return this.move();
-  };
-
   RetardedNPC.prototype.move = function() {
-    if (!this.isDead()) {
-      this.shoot();
-    }
-    if (this.isDead()) {
-      return;
-    }
-    if (!this.isMovable) {
-      return;
-    }
+    this.shoot();
     this.position.x += this.velocity.x * this.speed;
     this.position.y += this.velocity.y * this.speed;
     if (this.position.x < 0) {
@@ -70,12 +55,12 @@
   };
 
   RetardedNPC.prototype.shoot = function() {
-    var bullet, i, j, opts, position, velocity;
-    this.removeBullets();
+    var bullet, i, j, opts, position, results, velocity;
     if (Math.random() > 0.99) {
+      results = [];
       for (i = j = 0; j <= 2; i = ++j) {
-        position = new Vector2(this.position.x + this.sprite.width / 2, this.position.y);
-        velocity = new Vector2(1 - i, 1);
+        position = new PIXI.Point(this.position.x + this.sprite.width / 2, this.position.y);
+        velocity = new PIXI.Point(1 - i, 1);
         opts = {
           position: position,
           velocity: velocity,
@@ -86,45 +71,11 @@
           sprite: "resources/img/bullet.png"
         };
         bullet = new Bullet(opts);
-        this.bullets.push(bullet);
-        GAME.stage.addChild(bullet.sprite);
+        GAME.currentScene.addChild(bullet.sprite);
+        results.push(this.lastShotDate = Date.now());
       }
-      return this.lastShotDate = Date.now();
+      return results;
     }
-  };
-
-  RetardedNPC.prototype.removeBullet = function(id) {
-    var bullet, ind, j, len, ref, results;
-    ref = this.bullets;
-    results = [];
-    for (j = 0, len = ref.length; j < len; j++) {
-      bullet = ref[j];
-      if ((bullet != null ? bullet.uid : void 0) === id) {
-        ind = this.bullets.indexOf(bullet);
-        GAME.stage.removeChild(bullet.sprite);
-        results.push(this.bullets.splice(ind, 1));
-      } else {
-        results.push(void 0);
-      }
-    }
-    return results;
-  };
-
-  RetardedNPC.prototype.removeBullets = function() {
-    var bullet, ind, j, len, ref, results;
-    ref = this.bullets;
-    results = [];
-    for (j = 0, len = ref.length; j < len; j++) {
-      bullet = ref[j];
-      if ((bullet != null ? bullet.position.y : void 0) > GameLoop.renderer.height) {
-        ind = this.bullets.indexOf(bullet);
-        GAME.stage.removeChild(bullet.sprite);
-        results.push(this.bullets.splice(ind, 1));
-      } else {
-        results.push(void 0);
-      }
-    }
-    return results;
   };
 
   module.exports = RetardedNPC;

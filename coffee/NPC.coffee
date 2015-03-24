@@ -13,7 +13,7 @@ class NPC extends GameObject
       velocity: velocity
       health: 1
       lifes: 1
-      speed: 8
+      speed: 4
       damage: 3
       isCollidable: true
       isMovable: true
@@ -36,7 +36,7 @@ NPC::move = () ->
   GAME.currentScene.removeChild(@) if @position.x > GAME.renderer.width + 300
 
 NPC::shoot = () ->
-  if Math.random() > 0.95
+  if Math.random() > 0.99
     position = new PIXI.Point(@position.x + @width/2, @position.y)
     velocity = new PIXI.Point(0, 1)
     opts =

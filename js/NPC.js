@@ -22,7 +22,7 @@
         velocity: velocity,
         health: 1,
         lifes: 1,
-        speed: 8,
+        speed: 4,
         damage: 3,
         isCollidable: true,
         isMovable: true,
@@ -57,7 +57,7 @@
 
   NPC.prototype.shoot = function() {
     var bullet, opts, position, velocity;
-    if (Math.random() > 0.95) {
+    if (Math.random() > 0.99) {
       position = new PIXI.Point(this.position.x + this.width / 2, this.position.y);
       velocity = new PIXI.Point(0, 1);
       opts = {

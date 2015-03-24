@@ -24,17 +24,8 @@ class RetardedNPC extends GameObject
     @init()
     return @
 
-RetardedNPC::init = () ->
-  @bullets = []
-  @position.x = Math.random() * (GameLoop.renderer.width / 2)
-  @position.y = Math.random() * (GameLoop.renderer.height / 2 )
-  @move()
-
 RetardedNPC::move = () ->
-  if not @isDead()
-    @shoot()
-  return if @isDead()
-  return if not @isMovable
+  @shoot()
   @position.x += @velocity.x * @speed
   @position.y += @velocity.y * @speed
   @velocity.x = Math.abs(@velocity.x) if @position.x < 0
@@ -42,11 +33,10 @@ RetardedNPC::move = () ->
 
 
 RetardedNPC::shoot = () ->
-  @removeBullets()
   if Math.random() > 0.99
     for i in [0..2]
-      position = new Vector2(@position.x + @sprite.width/2, @position.y)
-      velocity = new Vector2(1-i, 1)
+      position = new PIXI.Point(@position.x + @sprite.width/2, @position.y)
+      velocity = new PIXI.Point(1-i, 1)
       opts =
         position: position
         velocity: velocity
@@ -56,22 +46,7 @@ RetardedNPC::shoot = () ->
         speed: 11
         sprite: "resources/img/bullet.png"
       bullet = new Bullet(opts)
-      @bullets.push bullet
-      GAME.stage.addChild(bullet.sprite)
-    @lastShotDate = Date.now()
-
-RetardedNPC::removeBullet = (id) ->
-  for bullet in @bullets
-    if bullet?.uid is id
-      ind = @bullets.indexOf(bullet)
-      GAME.stage.removeChild(bullet.sprite)
-      @bullets.splice(ind, 1)
-
-RetardedNPC::removeBullets = () ->
-  for bullet in @bullets
-    if bullet?.position.y > GameLoop.renderer.height
-      ind = @bullets.indexOf(bullet)
-      GAME.stage.removeChild(bullet.sprite)
-      @bullets.splice(ind, 1)
+      GAME.currentScene.addChild(bullet.sprite)
+      @lastShotDate = Date.now()
 
 module.exports = RetardedNPC
