@@ -51,6 +51,9 @@
       this.velocity.y = Math.abs(this.velocity.y);
     }
     if (this.position.x > GAME.renderer.width + 300) {
+      GAME.currentScene.removeChild(this);
+    }
+    if (this.position.y > GAME.renderer.height) {
       return GAME.currentScene.removeChild(this);
     }
   };
