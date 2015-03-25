@@ -3,7 +3,7 @@ Scene = require("../Scene")
 class PauseMenu extends Scene
   constructor: () ->
     super()
-    @title = new PIXI.Text("GAME PAUSED", {font: "150px Pixelate", fill: "#5ACAFA", align: "center", stroke: "#FFFFFF", strokeThickness: 6})
+    @title = new PIXI.Text("GAME PAUSED", {font: GAME.renderer.width/10 + "px Pixelate", fill: "#5ACAFA", align: "center", stroke: "#FFFFFF", strokeThickness: 6})
     @title.position.x = $(window).width()/2 - @title.width/2
     @title.position.y = $(window).height()/2 - @title.height/2
 
