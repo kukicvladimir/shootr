@@ -11,7 +11,7 @@
     function PauseMenu() {
       PauseMenu.__super__.constructor.call(this);
       this.title = new PIXI.Text("GAME PAUSED", {
-        font: "150px Pixelate",
+        font: GAME.renderer.width / 10 + "px Pixelate",
         fill: "#5ACAFA",
         align: "center",
         stroke: "#FFFFFF",

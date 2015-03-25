@@ -11,7 +11,7 @@
     function MainMenu() {
       MainMenu.__super__.constructor.call(this);
       this.title = new PIXI.Text("ShootR", {
-        font: "150px Pixelate",
+        font: GAME.renderer.width / 10 + "px Pixelate",
         fill: "#5ACAFA",
         align: "center",
         stroke: "#FFFFFF",

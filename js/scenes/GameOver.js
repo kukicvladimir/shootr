@@ -11,7 +11,7 @@
     function GameOverMenu() {
       GameOverMenu.__super__.constructor.call(this);
       this.title = new PIXI.Text("GAME OVER", {
-        font: "150px Pixelate",
+        font: GAME.renderer.width / 10 + "px Pixelate",
         fill: "#FF0000",
         align: "center",
         stroke: "#FFFFFF",
