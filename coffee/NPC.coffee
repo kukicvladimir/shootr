@@ -34,6 +34,7 @@ NPC::move = () ->
   @velocity.y = Math.abs(@velocity.y) if @position.y < 0
 
   GAME.currentScene.removeChild(@) if @position.x > GAME.renderer.width + 300
+  GAME.currentScene.removeChild(@) if @position.y > GAME.renderer.height
 
 NPC::shoot = () ->
   if Math.random() > 0.99
