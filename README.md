@@ -10,4 +10,4 @@ Clone the repo and run following commands
 To run the game execute `node server.js` and open game in your favourite browser on `http://localhost:8080`
 
 
-[LIVE DEMO] (http://kukic.awardspace.info/shootr/)
+[LIVE DEMO] (http://kukic.byethost9.com/shootr/)
