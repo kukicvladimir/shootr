@@ -6,9 +6,10 @@ It uses [PIXI.js](http://www.pixijs.com/) - 2D webGL renderer with canvas fallba
 
 #Installation
 Clone the repo and run following commands
-`bower install`
 
-`npm install`
+- `bower install`
+
+- `npm install`
 
 To run the game start the server by typing `node server.js` and open game in your favourite browser on `http://localhost:8080`
 
