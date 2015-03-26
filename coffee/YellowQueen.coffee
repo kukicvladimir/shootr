@@ -27,8 +27,7 @@ class YellowQueen extends GameObject
 #
 YellowQueen::move = () ->
   @shoot()
-  @position.x += @velocity.x * @speed
-  @position.y += @velocity.y * @speed
+  super
   @velocity.x = Math.abs(@velocity.x) if @position.x < 0
   @velocity.x = -@velocity.x if @position.x > GAME.renderer.width - @width
 

@@ -42,8 +42,7 @@
 
   YellowQueen.prototype.move = function() {
     this.shoot();
-    this.position.x += this.velocity.x * this.speed;
-    this.position.y += this.velocity.y * this.speed;
+    YellowQueen.__super__.move.apply(this, arguments);
     if (this.position.x < 0) {
       this.velocity.x = Math.abs(this.velocity.x);
     }

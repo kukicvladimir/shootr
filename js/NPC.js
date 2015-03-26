@@ -31,7 +31,7 @@
         isDead: false,
         texture: "resources/img/alien.png",
         shotDelay: 150,
-        collidesWith: ["Player"]
+        collidesWith: ["Player", "Metheor"]
       };
       NPC.__super__.constructor.call(this, opts);
       return this;
@@ -43,15 +43,8 @@
 
   NPC.prototype.move = function() {
     this.shoot();
-    this.position.x += this.velocity.x * this.speed;
-    this.position.y += this.velocity.y * this.speed;
-    if (this.position.x < 0) {
-      this.velocity.x = Math.abs(this.velocity.x);
-    }
-    if (this.position.y < 0) {
-      this.velocity.y = Math.abs(this.velocity.y);
-    }
-    if (this.position.x > GAME.renderer.width + 300) {
+    NPC.__super__.move.apply(this, arguments);
+    if (this.position.x > GAME.renderer.width - this.width || this.position.x < 0) {
       GAME.currentScene.removeChild(this);
     }
     if (this.position.y > GAME.renderer.height) {
@@ -82,9 +75,9 @@
   NPC.prototype.onCollision = function(obj) {
     switch (obj.constructor.name) {
       case 'Bullet':
-        return this.decreaseHealth(obj.damage);
+        this.decreaseHealth(obj.damage);
+        return GAME.hud.updateScore(50);
       case 'Player':
-        return this.decreaseLifes();
       case 'Metheor':
         return this.decreaseLifes();
     }

@@ -45,9 +45,6 @@
 
   Player.prototype.shoot = function() {
     var bullet, opts, position, velocity;
-    if (this.isDead()) {
-      return;
-    }
     if (this.lastShotDate < Date.now() - this.shotDelay) {
       velocity = new PIXI.Point(0, -1);
       position = new PIXI.Point(this.position.x + this.width / 2, this.position.y);
@@ -58,7 +55,7 @@
         isCollidable: true,
         isMovable: true,
         speed: 10,
-        collidesWith: ['NPC', 'Metheor', 'YellowQueen']
+        collidesWith: ['NPC', 'Metheor', 'YellowQueen', 'Satellite']
       };
       bullet = new Bullet(opts);
       GAME.currentScene.addChild(bullet);
@@ -92,8 +89,6 @@
         this.decreaseHealth(obj.damage);
         break;
       case 'NPC':
-        this.decreaseLifes();
-        break;
       case 'Metheor':
         this.decreaseLifes();
     }

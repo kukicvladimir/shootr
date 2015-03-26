@@ -1,5 +1,5 @@
 (function() {
-  var HUDManager, Level1, Metheor, NPC, Player, Scene, YellowQueen, levelScript,
+  var HUDManager, Level1, Metheor, NPC, Player, Satellite, Scene, YellowQueen, levelScript,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
@@ -8,6 +8,8 @@
   Player = require("../Player");
 
   NPC = require("../NPC");
+
+  Satellite = require("../Satellite");
 
   YellowQueen = require("../YellowQueen");
 
@@ -85,6 +87,9 @@
           switch (key) {
             case "NPC":
               npc = new NPC(opts);
+              break;
+            case "Satellite":
+              npc = new Satellite(opts);
               break;
             case "YellowQueen":
               npc = new YellowQueen(opts);

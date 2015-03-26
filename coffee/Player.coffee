@@ -29,7 +29,6 @@ Player::init = () ->
   @position.y = GAME.renderer.height - 100
 
 Player::shoot = ->
-  return if @isDead()
   if @lastShotDate < Date.now() - @shotDelay
     velocity = new PIXI.Point(0, -1)
     position = new PIXI.Point(@position.x + @width/2, @position.y)
@@ -40,7 +39,7 @@ Player::shoot = ->
       isCollidable: true
       isMovable: true
       speed: 10
-      collidesWith: ['NPC', 'Metheor', 'YellowQueen']
+      collidesWith: ['NPC', 'Metheor', 'YellowQueen', 'Satellite']
     bullet = new Bullet(opts)
     GAME.currentScene.addChild(bullet)
     @lastShotDate = Date.now()
@@ -56,8 +55,7 @@ Player::move = ->
 Player::onCollision = (obj) ->
   switch obj.constructor.name
     when 'Bullet' then @decreaseHealth(obj.damage)
-    when 'NPC' then @decreaseLifes()
-    when 'Metheor' then @decreaseLifes()
+    when 'NPC', 'Metheor' then @decreaseLifes()
 
   GAME.hud.updateHealthBarAndLifes(@health, @baseHealth, @lifes)
 

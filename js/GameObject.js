@@ -298,6 +298,16 @@
 
 
   /*
+    Move object using velocity
+   */
+
+  GameObject.prototype.move = function() {
+    this.position.x += this.velocity.x * this.speed;
+    return this.position.y += this.velocity.y * this.speed;
+  };
+
+
+  /*
   Blink object to specified color
    */
 
@@ -311,7 +321,7 @@
   };
 
   GameObject.prototype.respawnBlink = function() {
-    this.tint = 0xFF0000;
+    this.tint = 0x00FF00;
     this.alpha = 0.2;
     return this.respawnAnimationInterval = setInterval((function(_this) {
       return function() {
@@ -332,8 +342,7 @@
         clearInterval(_this.respawnAnimationInterval);
         _this.setCollidable(true);
         _this.tint = 0xFFFFFF;
-        _this.alpha = 1;
-        return console.log(_this.isCollidable);
+        return _this.alpha = 1;
       };
     })(this), 2000);
   };

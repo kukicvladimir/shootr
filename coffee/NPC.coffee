@@ -22,19 +22,14 @@ class NPC extends GameObject
       isDead: false
       texture: "resources/img/alien.png"
       shotDelay: 150
-      collidesWith: ["Player"]
+      collidesWith: ["Player", "Metheor"]
     super(opts)
     return @
 
 NPC::move = () ->
   @shoot()
-  @position.x += @velocity.x * @speed
-  @position.y += @velocity.y * @speed
-  @velocity.x = Math.abs(@velocity.x) if @position.x < 0
-
-  @velocity.y = Math.abs(@velocity.y) if @position.y < 0
-
-  GAME.currentScene.removeChild(@) if @position.x > GAME.renderer.width + 300
+  super
+  GAME.currentScene.removeChild(@) if (@position.x > GAME.renderer.width - @width or @position.x < 0)
   GAME.currentScene.removeChild(@) if @position.y > GAME.renderer.height
 
 NPC::shoot = () ->
@@ -55,9 +50,10 @@ NPC::shoot = () ->
 
 NPC::onCollision = (obj)->
   switch obj.constructor.name
-    when 'Bullet' then @decreaseHealth(obj.damage)
-    when 'Player' then @decreaseLifes()
-    when 'Metheor' then @decreaseLifes()
+    when 'Bullet'
+      @decreaseHealth(obj.damage)
+      GAME.hud.updateScore(50)
+    when 'Player', 'Metheor' then @decreaseLifes()
 
 
 module.exports = NPC

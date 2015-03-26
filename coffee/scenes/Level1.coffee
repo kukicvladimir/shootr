@@ -1,6 +1,7 @@
 Scene = require("../Scene")
 Player = require("../Player")
 NPC = require("../NPC")
+Satellite = require("../Satellite")
 YellowQueen = require("../YellowQueen")
 Metheor = require("../Metheor")
 HUDManager = require("../HUDManager")
@@ -66,6 +67,7 @@ Level1::update = ()->
 #
         switch key
           when "NPC" then npc = new NPC(opts)
+          when "Satellite" then npc = new Satellite(opts)
           when "YellowQueen" then npc = new YellowQueen(opts)
         @addChild(npc)
 

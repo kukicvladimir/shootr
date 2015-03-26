@@ -213,6 +213,14 @@ GameObject::moveDown = () ->
   if @position.y > GAME.renderer.height - @height
     @position.y = GAME.renderer.height - @height
 
+
+###
+  Move object using velocity
+###
+GameObject::move = () ->
+  @position.x += @velocity.x * @speed
+  @position.y += @velocity.y * @speed
+
 ###
 Blink object to specified color
 ###
@@ -224,7 +232,7 @@ GameObject::blinkMe = () ->
   , 50)
 
 GameObject::respawnBlink = () ->
-  @tint = 0xFF0000
+  @tint = 0x00FF00
   @alpha = 0.2
   @respawnAnimationInterval = setInterval(
     () =>
@@ -242,7 +250,6 @@ GameObject::respawn = () ->
     @setCollidable(true)
     @tint = 0xFFFFFF
     @alpha = 1
-    console.log(@isCollidable)
   , 2000)
 
 ###
