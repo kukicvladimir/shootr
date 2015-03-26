@@ -22,6 +22,7 @@ class NPC extends GameObject
       isDead: false
       texture: "resources/img/alien.png"
       shotDelay: 150
+      collidesWith: ["Player"]
     super(opts)
     return @
 
@@ -53,7 +54,10 @@ NPC::shoot = () ->
     @lastShotDate = Date.now()
 
 NPC::onCollision = (obj)->
-  @decreaseHealth(obj.damage)
-  GAME.hud.updateScore(50)
+  switch obj.constructor.name
+    when 'Bullet' then @decreaseHealth(obj.damage)
+    when 'Player' then @decreaseLifes()
+    when 'Metheor' then @decreaseLifes()
+
 
 module.exports = NPC

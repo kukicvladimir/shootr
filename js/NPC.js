@@ -30,7 +30,8 @@
         shield: 0,
         isDead: false,
         texture: "resources/img/alien.png",
-        shotDelay: 150
+        shotDelay: 150,
+        collidesWith: ["Player"]
       };
       NPC.__super__.constructor.call(this, opts);
       return this;
@@ -79,8 +80,14 @@
   };
 
   NPC.prototype.onCollision = function(obj) {
-    this.decreaseHealth(obj.damage);
-    return GAME.hud.updateScore(50);
+    switch (obj.constructor.name) {
+      case 'Bullet':
+        return this.decreaseHealth(obj.damage);
+      case 'Player':
+        return this.decreaseLifes();
+      case 'Metheor':
+        return this.decreaseLifes();
+    }
   };
 
   module.exports = NPC;

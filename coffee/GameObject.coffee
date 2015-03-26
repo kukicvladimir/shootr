@@ -82,6 +82,12 @@ class GameObject extends PIXI.Sprite
     ###
     @shotDelay = opts[0].shotDelay
 
+
+    ###
+    blink interval used when respawning
+    ###
+    @respawnAnimationInterval = null
+
     return @
 
 ###
@@ -105,11 +111,22 @@ GameObject::setShieldActive = (active) ->
   @isShieldActive = active
 
 ###
-update the number of lifes of game object
+increase number of lifes
 ###
-GameObject::updateLifes = (lifes) ->
-  @lifes += lifes
-  @lifes = 0 if @lifes <= 0
+GameObject::increaseLifes = () ->
+  @lifes++
+
+###
+decrease number of lifes
+###
+GameObject::decreaseLifes = () ->
+  @lifes--
+
+  if @lifes is 0
+    GAME.goToScene("gameOver") if @constructor.name == 'Player'
+    GAME.currentScene.removeChild(@)
+  else
+    @respawn()
 
 ###
 decrease health of the object if shield is not active
@@ -121,15 +138,12 @@ GameObject::decreaseHealth = (damage) ->
   @health -= parseInt(damage)
   @blinkMe()
   if @health <= 0
-    @updateLifes(-1)
+    @decreaseLifes()
     if @lifes <= 0
       @health = 0
     else
       @health = @baseHealth
 
-  if @lifes is 0
-    GAME.goToScene("gameOver") if @constructor.name == 'Player'
-    GAME.currentScene.removeChild(@)
 
 ###
 check if object is dead
@@ -211,16 +225,24 @@ GameObject::blinkMe = () ->
 
 GameObject::respawnBlink = () ->
   @tint = 0xFF0000
-  setTimeout(
+  @alpha = 0.2
+  @respawnAnimationInterval = setInterval(
     () =>
-      @tint = 0xFFFFFF
-  , 2000)
+      if @tint is 0x00FF00
+        @tint = 0xFFFFFF
+      else
+        @tint = 0x00FF00
+  , 20)
 
 GameObject::respawn = () ->
   @setCollidable(false)
-  setTimeout(
-    @respawnBlink()
+  @respawnBlink()
+  setTimeout( () =>
+    clearInterval(@respawnAnimationInterval)
     @setCollidable(true)
+    @tint = 0xFFFFFF
+    @alpha = 1
+    console.log(@isCollidable)
   , 2000)
 
 ###

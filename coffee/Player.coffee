@@ -19,6 +19,7 @@ class Player extends GameObject
       isShieldActive: false
       texture: "resources/img/spaceship.gif"
       shotDelay: 150
+      collidesWith: ['NPC', 'Metheor', 'YellowQueen']
     super(opts)
     @init()
     return @
@@ -53,7 +54,11 @@ Player::move = ->
     @shoot() if (GAME.inputManager.keyDown(GAME.inputManager.Keys.SPACE))
 
 Player::onCollision = (obj) ->
-  @decreaseHealth(obj.damage)
+  switch obj.constructor.name
+    when 'Bullet' then @decreaseHealth(obj.damage)
+    when 'NPC' then @decreaseLifes()
+    when 'Metheor' then @decreaseLifes()
+
   GAME.hud.updateHealthBarAndLifes(@health, @baseHealth, @lifes)
 
 module.exports = Player

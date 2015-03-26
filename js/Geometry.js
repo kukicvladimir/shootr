@@ -5,7 +5,12 @@
   Geometry = {};
 
   Geometry.rectangleIntersectsRectangle = function(rectA, rectB) {
-    return rectA.x >= rectB.x && rectA.y >= rectB.y && (rectA.x + rectA.width) <= (rectB.x + rectB.width) && (rectA.y + rectA.height) <= (rectB.y + rectB.height);
+    var aAboveB, aBelowB, aLeftOfB, aRightOfB;
+    aLeftOfB = rectA.x < rectB.x;
+    aRightOfB = rectA.x > (rectB.x + rectB.width);
+    aAboveB = rectA.y > (rectB.y + rectB.height);
+    aBelowB = rectA.y + rectA.height < rectB.y;
+    return !(aLeftOfB || aRightOfB || aAboveB || aBelowB);
   };
 
   module.exports = Geometry;

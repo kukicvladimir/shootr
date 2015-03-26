@@ -26,7 +26,8 @@
         isMovable: true,
         isShieldActive: false,
         texture: "resources/img/spaceship.gif",
-        shotDelay: 150
+        shotDelay: 150,
+        collidesWith: ['NPC', 'Metheor', 'YellowQueen']
       };
       Player.__super__.constructor.call(this, opts);
       this.init();
@@ -86,7 +87,16 @@
   };
 
   Player.prototype.onCollision = function(obj) {
-    this.decreaseHealth(obj.damage);
+    switch (obj.constructor.name) {
+      case 'Bullet':
+        this.decreaseHealth(obj.damage);
+        break;
+      case 'NPC':
+        this.decreaseLifes();
+        break;
+      case 'Metheor':
+        this.decreaseLifes();
+    }
     return GAME.hud.updateHealthBarAndLifes(this.health, this.baseHealth, this.lifes);
   };
 

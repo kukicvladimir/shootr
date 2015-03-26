@@ -93,6 +93,11 @@
       shot delay in milliseconds
        */
       this.shotDelay = opts[0].shotDelay;
+
+      /*
+      blink interval used when respawning
+       */
+      this.respawnAnimationInterval = null;
       return this;
     }
 
@@ -131,13 +136,27 @@
 
 
   /*
-  update the number of lifes of game object
+  increase number of lifes
    */
 
-  GameObject.prototype.updateLifes = function(lifes) {
-    this.lifes += lifes;
-    if (this.lifes <= 0) {
-      return this.lifes = 0;
+  GameObject.prototype.increaseLifes = function() {
+    return this.lifes++;
+  };
+
+
+  /*
+  decrease number of lifes
+   */
+
+  GameObject.prototype.decreaseLifes = function() {
+    this.lifes--;
+    if (this.lifes === 0) {
+      if (this.constructor.name === 'Player') {
+        GAME.goToScene("gameOver");
+      }
+      return GAME.currentScene.removeChild(this);
+    } else {
+      return this.respawn();
     }
   };
 
@@ -155,18 +174,12 @@
     this.health -= parseInt(damage);
     this.blinkMe();
     if (this.health <= 0) {
-      this.updateLifes(-1);
+      this.decreaseLifes();
       if (this.lifes <= 0) {
-        this.health = 0;
+        return this.health = 0;
       } else {
-        this.health = this.baseHealth;
+        return this.health = this.baseHealth;
       }
-    }
-    if (this.lifes === 0) {
-      if (this.constructor.name === 'Player') {
-        GAME.goToScene("gameOver");
-      }
-      return GAME.currentScene.removeChild(this);
     }
   };
 
@@ -299,16 +312,30 @@
 
   GameObject.prototype.respawnBlink = function() {
     this.tint = 0xFF0000;
-    return setTimeout((function(_this) {
+    this.alpha = 0.2;
+    return this.respawnAnimationInterval = setInterval((function(_this) {
       return function() {
-        return _this.tint = 0xFFFFFF;
+        if (_this.tint === 0x00FF00) {
+          return _this.tint = 0xFFFFFF;
+        } else {
+          return _this.tint = 0x00FF00;
+        }
       };
-    })(this), 2000);
+    })(this), 20);
   };
 
   GameObject.prototype.respawn = function() {
     this.setCollidable(false);
-    return setTimeout(this.respawnBlink(), this.setCollidable(true), 2000);
+    this.respawnBlink();
+    return setTimeout((function(_this) {
+      return function() {
+        clearInterval(_this.respawnAnimationInterval);
+        _this.setCollidable(true);
+        _this.tint = 0xFFFFFF;
+        _this.alpha = 1;
+        return console.log(_this.isCollidable);
+      };
+    })(this), 2000);
   };
 
 
