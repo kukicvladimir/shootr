@@ -49,7 +49,7 @@ NPC::shoot = () ->
     @lastShotDate = Date.now()
 
 NPC::onCollision = (obj)->
-  switch obj.constructor.name
+  switch obj.getObjectType()
     when 'Bullet'
       @decreaseHealth(obj.damage)
       GAME.hud.updateScore(50)

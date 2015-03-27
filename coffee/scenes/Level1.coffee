@@ -32,7 +32,6 @@ Level1::init = () ->
   @addChild(@player)
   GAME.hud = new HUDManager(@)
 
-
 Level1::reset = () ->
   @count = 0
   @removeChildren()
@@ -45,7 +44,6 @@ Level1::update = ()->
 
   if (@background.y > $(window).height())
     @background.y -= @background.height * 2
-
 
   @background2.y = @count * 0.1 - @background2.height;
   @background2.y %= @background2.height * 2

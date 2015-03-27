@@ -107,6 +107,15 @@
 
 
   /*
+    get type of object
+   */
+
+  GameObject.prototype.getObjectType = function() {
+    return this.constructor.name;
+  };
+
+
+  /*
   set if game object is movable or not
   set movable to true/false
    */
@@ -358,7 +367,7 @@
     results = [];
     for (i = 0, len = ref.length; i < len; i++) {
       object = ref[i];
-      if (object !== this && !!(object != null ? object.isCollidable : void 0) && $.inArray(object.constructor.name, this.collidesWith) !== -1) {
+      if (object !== this && !!(object != null ? object.isCollidable : void 0) && $.inArray(object.getObjectType(), this.collidesWith) !== -1) {
         if (Geometry.rectangleIntersectsRectangle(this, object)) {
           object.onCollision(this);
           results.push(this.onCollision(object));

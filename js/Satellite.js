@@ -15,8 +15,8 @@
     function Satellite() {
       var opts, position, velocity;
       opts = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-      position = new PIXI.Point(0, 0);
-      velocity = new PIXI.Point(2, 0);
+      position = opts[0].position;
+      velocity = opts[0].velocity;
       opts = {
         position: position,
         velocity: velocity,
@@ -29,8 +29,8 @@
         isShieldActive: false,
         shield: 0,
         texture: "resources/img/retard.png",
-        shotDelay: 250,
-        collidesWith: ["Player"]
+        shotDelay: 2500,
+        collidesWith: ["Player", "Metheor"]
       };
       Satellite.__super__.constructor.call(this, opts);
       return this;
@@ -49,9 +49,8 @@
   };
 
   Satellite.prototype.shoot = function() {
-    var bullet, i, j, opts, position, results, velocity;
-    if (Math.random() > 0.99) {
-      results = [];
+    var bullet, i, j, opts, position, velocity;
+    if (this.lastShotDate < Date.now() - this.shotDelay) {
       for (i = j = 0; j <= 2; i = ++j) {
         position = new PIXI.Point(this.position.x + this.width / 2, this.position.y);
         velocity = new PIXI.Point(1 - i, 1);
@@ -65,14 +64,13 @@
         };
         bullet = new Bullet(opts);
         GAME.currentScene.addChild(bullet);
-        results.push(this.lastShotDate = Date.now());
       }
-      return results;
+      return this.lastShotDate = Date.now();
     }
   };
 
   Satellite.prototype.onCollision = function(obj) {
-    switch (obj.constructor.name) {
+    switch (obj.getObjectType()) {
       case 'Bullet':
         this.decreaseHealth(obj.damage);
         return GAME.hud.updateScore(100);

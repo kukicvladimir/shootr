@@ -84,7 +84,7 @@
   };
 
   Player.prototype.onCollision = function(obj) {
-    switch (obj.constructor.name) {
+    switch (obj.getObjectType()) {
       case 'Bullet':
         this.decreaseHealth(obj.damage);
         break;

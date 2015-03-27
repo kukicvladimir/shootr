@@ -53,7 +53,7 @@ Player::move = ->
     @shoot() if (GAME.inputManager.keyDown(GAME.inputManager.Keys.SPACE))
 
 Player::onCollision = (obj) ->
-  switch obj.constructor.name
+  switch obj.getObjectType()
     when 'Bullet' then @decreaseHealth(obj.damage)
     when 'NPC', 'Metheor' then @decreaseLifes()
 

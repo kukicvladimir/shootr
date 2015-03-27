@@ -91,6 +91,12 @@ class GameObject extends PIXI.Sprite
     return @
 
 ###
+  get type of object
+###
+GameObject::getObjectType = () ->
+  return @constructor.name
+
+###
 set if game object is movable or not
 set movable to true/false
 ###
@@ -257,7 +263,7 @@ Resolve collisions - Iterater through all game  objects and  resolve collisions 
 ###
 GameObject::resolveCollisions = ->
   for object in GAME.currentScene.children
-    if object != @ and !!object?.isCollidable and $.inArray(object.constructor.name, @collidesWith) isnt -1
+    if object != @ and !!object?.isCollidable and $.inArray(object.getObjectType(), @collidesWith) isnt -1
       if Geometry.rectangleIntersectsRectangle(@, object)
         object.onCollision(this)
         this.onCollision(object)
