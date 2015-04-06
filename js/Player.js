@@ -26,6 +26,8 @@
         isMovable: true,
         isShieldActive: false,
         texture: "resources/img/spaceship.gif",
+        deadAudio: "resources/sound/PlayerDeath.ogg",
+        shootAudio: "resources/sound/PlayerShoot.ogg",
         shotDelay: 150,
         collidesWith: ['NPC', 'Metheor', 'YellowQueen']
       };
@@ -58,6 +60,7 @@
         collidesWith: ['NPC', 'Metheor', 'YellowQueen', 'Satellite']
       };
       bullet = new Bullet(opts);
+      this.playShootAudio();
       GAME.currentScene.addChild(bullet);
       return this.lastShotDate = Date.now();
     }

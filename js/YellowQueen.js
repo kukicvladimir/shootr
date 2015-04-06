@@ -30,6 +30,8 @@
         shield: 0,
         isDead: false,
         texture: "resources/img/queen.png",
+        deadAudio: "resources/sound/BossDeath.ogg",
+        shootAudio: "resources/sound/NPCShoot.ogg",
         shotDelay: 150
       };
       YellowQueen.__super__.constructor.call(this, opts);
@@ -63,6 +65,7 @@
   YellowQueen.prototype.shoot = function() {
     var bullet, directionX, opts, position, rand, velocity;
     if (Math.random() > 0.80) {
+      this.playShootAudio();
       position = new PIXI.Point(this.position.x + this.width / 2, this.position.y);
       rand = Math.random();
       directionX = -2;

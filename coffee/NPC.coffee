@@ -21,6 +21,8 @@ class NPC extends GameObject
       shield: 0
       isDead: false
       texture: "resources/img/alien.png"
+      deadAudio: "resources/sound/EnemyDeath.ogg"
+      shootAudio: "resources/sound/NPCShoot.ogg"
       shotDelay: 150
       collidesWith: ["Player", "Metheor"]
     super(opts)
@@ -34,6 +36,7 @@ NPC::move = () ->
 
 NPC::shoot = () ->
   if Math.random() > 0.99
+    @playShootAudio()
     position = new PIXI.Point(@position.x + @width/2, @position.y)
     velocity = new PIXI.Point(0, 1)
     opts =

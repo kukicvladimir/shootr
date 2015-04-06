@@ -18,6 +18,8 @@ class Player extends GameObject
       isMovable: true
       isShieldActive: false
       texture: "resources/img/spaceship.gif"
+      deadAudio: "resources/sound/PlayerDeath.ogg"
+      shootAudio: "resources/sound/PlayerShoot.ogg"
       shotDelay: 150
       collidesWith: ['NPC', 'Metheor', 'YellowQueen']
     super(opts)
@@ -30,6 +32,7 @@ Player::init = () ->
 
 Player::shoot = ->
   if @lastShotDate < Date.now() - @shotDelay
+
     velocity = new PIXI.Point(0, -1)
     position = new PIXI.Point(@position.x + @width/2, @position.y)
     opts =
@@ -41,6 +44,7 @@ Player::shoot = ->
       speed: 10
       collidesWith: ['NPC', 'Metheor', 'YellowQueen', 'Satellite']
     bullet = new Bullet(opts)
+    @playShootAudio()
     GAME.currentScene.addChild(bullet)
     @lastShotDate = Date.now()
 

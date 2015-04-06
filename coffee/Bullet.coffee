@@ -6,6 +6,7 @@ class Bullet extends GameObject
     @position = opts[0].position
     @velocity = opts[0].velocity
     opts[0].texture = "resources/img/bullet.png"
+
     super(opts[0])
     return @
 

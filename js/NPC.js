@@ -30,6 +30,8 @@
         shield: 0,
         isDead: false,
         texture: "resources/img/alien.png",
+        deadAudio: "resources/sound/EnemyDeath.ogg",
+        shootAudio: "resources/sound/NPCShoot.ogg",
         shotDelay: 150,
         collidesWith: ["Player", "Metheor"]
       };
@@ -55,6 +57,7 @@
   NPC.prototype.shoot = function() {
     var bullet, opts, position, velocity;
     if (Math.random() > 0.99) {
+      this.playShootAudio();
       position = new PIXI.Point(this.position.x + this.width / 2, this.position.y);
       velocity = new PIXI.Point(0, 1);
       opts = {

@@ -21,6 +21,8 @@ class YellowQueen extends GameObject
       shield: 0
       isDead: false
       texture: "resources/img/queen.png"
+      deadAudio: "resources/sound/BossDeath.ogg"
+      shootAudio: "resources/sound/NPCShoot.ogg"
       shotDelay: 150
     super(opts)
     return @
@@ -38,6 +40,7 @@ YellowQueen::move = () ->
 
 YellowQueen::shoot = () ->
   if Math.random() > 0.80
+    @playShootAudio()
     position = new PIXI.Point(@position.x + @width/2, @position.y)
     rand = Math.random()
     directionX = -2

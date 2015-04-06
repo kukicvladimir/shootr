@@ -98,6 +98,16 @@
       blink interval used when respawning
        */
       this.respawnAnimationInterval = null;
+
+      /*
+      Sound played when object shoots
+       */
+      this.shootAudio = new Audio(opts[0].shootAudio);
+
+      /*
+      Sound played when object dies
+       */
+      this.deadAudio = new Audio(opts[0].deadAudio);
       return this;
     }
 
@@ -159,6 +169,7 @@
 
   GameObject.prototype.decreaseLifes = function() {
     this.lifes--;
+    this.playDeadAudio();
     if (this.lifes === 0) {
       if (this.constructor.name === 'Player') {
         GAME.goToScene("gameOver");
@@ -388,6 +399,14 @@
     if (this.isCollidable) {
       return this.resolveCollisions();
     }
+  };
+
+  GameObject.prototype.playShootAudio = function() {
+    return this.shootAudio.play();
+  };
+
+  GameObject.prototype.playDeadAudio = function() {
+    return this.deadAudio.play();
   };
 
   module.exports = GameObject;

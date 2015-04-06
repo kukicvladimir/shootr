@@ -88,6 +88,16 @@ class GameObject extends PIXI.Sprite
     ###
     @respawnAnimationInterval = null
 
+    ###
+    Sound played when object shoots
+    ###
+    @shootAudio = new Audio(opts[0].shootAudio)
+
+    ###
+    Sound played when object dies
+    ###
+    @deadAudio = new Audio(opts[0].deadAudio)
+
     return @
 
 ###
@@ -127,7 +137,7 @@ decrease number of lifes
 ###
 GameObject::decreaseLifes = () ->
   @lifes--
-
+  @playDeadAudio()
   if @lifes is 0
     GAME.goToScene("gameOver") if @constructor.name == 'Player'
     GAME.currentScene.removeChild(@)
@@ -271,6 +281,12 @@ GameObject::resolveCollisions = ->
 GameObject::update = ->
   @move() if @isMovable
   @resolveCollisions() if @isCollidable
+
+GameObject::playShootAudio = ->
+  @shootAudio.play()
+
+GameObject::playDeadAudio = ->
+  @deadAudio.play()
 
 module.exports = GameObject
 
