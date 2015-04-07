@@ -36,6 +36,7 @@
         collidesWith: ["Player", "Metheor"]
       };
       NPC.__super__.constructor.call(this, opts);
+      this.deadAudio.volume = 0.3;
       return this;
     }
 

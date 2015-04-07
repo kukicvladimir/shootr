@@ -26,6 +26,7 @@ class NPC extends GameObject
       shotDelay: 150
       collidesWith: ["Player", "Metheor"]
     super(opts)
+    @deadAudio.volume = 0.3
     return @
 
 NPC::move = () ->

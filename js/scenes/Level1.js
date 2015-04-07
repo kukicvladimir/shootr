@@ -24,6 +24,7 @@
 
     function Level1() {
       Level1.__super__.constructor.call(this);
+      this.audio = new Audio("resources/sound/BackgroundTheme.ogg");
       this.init();
     }
 
@@ -45,7 +46,9 @@
     this.addChild(this.background2);
     this.player = new Player();
     this.addChild(this.player);
-    return GAME.hud = new HUDManager(this);
+    GAME.hud = new HUDManager(this);
+    this.audio.volume = 0.2;
+    return this.audio.play();
   };
 
   Level1.prototype.reset = function() {

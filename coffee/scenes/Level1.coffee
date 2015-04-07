@@ -10,6 +10,7 @@ levelScript = require("../../resources/json/level.json")
 class Level1 extends Scene
   constructor: () ->
     super()
+    @audio = new Audio("resources/sound/BackgroundTheme.ogg")
     @init()
 
 Level1::init = () ->
@@ -31,6 +32,9 @@ Level1::init = () ->
   @player = new Player()
   @addChild(@player)
   GAME.hud = new HUDManager(@)
+
+  @audio.volume = 0.2
+  @audio.play()
 
 Level1::reset = () ->
   @count = 0
